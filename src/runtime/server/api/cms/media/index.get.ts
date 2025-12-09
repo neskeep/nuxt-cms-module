@@ -1,3 +1,4 @@
+import { defineEventHandler, getQuery } from '#imports'
 import { desc, asc, like, sql } from 'drizzle-orm'
 import { requireAuth } from '../../../utils/auth'
 import { useCmsDatabase, mediaSqlite, mediaPostgres, getDatabaseType } from '../../../database/client'

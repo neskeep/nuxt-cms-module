@@ -1,3 +1,4 @@
+import { defineEventHandler, createError } from '#imports'
 import { getUserFromEvent } from '../../../utils/auth'
 
 export default defineEventHandler(async (event) => {

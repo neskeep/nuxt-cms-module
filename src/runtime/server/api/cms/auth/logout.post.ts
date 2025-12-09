@@ -1,3 +1,4 @@
+import { defineEventHandler } from '#imports'
 import { clearAuthCookie } from '../../../utils/auth'
 
 export default defineEventHandler(async (event) => {

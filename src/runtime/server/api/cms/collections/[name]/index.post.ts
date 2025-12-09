@@ -1,3 +1,4 @@
+import { defineEventHandler, getRouterParam, readBody, createError } from '#imports'
 import { nanoid } from 'nanoid'
 import { requireAuth } from '../../../../utils/auth'
 import { processContentData } from '../../../../utils/validation'
