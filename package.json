@@ -36,6 +36,8 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.16.2",
+    "@iconify-json/heroicons": "^1.2.2",
+    "jiti": "^2.4.2",
     "defu": "^6.1.4",
     "drizzle-orm": "^0.38.3",
     "better-sqlite3": "^11.7.0",

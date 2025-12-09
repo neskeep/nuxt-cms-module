@@ -127,7 +127,7 @@ const statusOptions = [
 
       <!-- Form -->
       <div class="form-card">
-        <CmsFormForm
+        <CmsForm
           :fields="collectionConfig.fields"
           v-model="formData"
           v-model:translations="translations"
@@ -178,7 +178,7 @@ const statusOptions = [
               </div>
             </div>
           </template>
-        </CmsFormForm>
+        </CmsForm>
       </div>
 
       <!-- Delete confirmation modal -->

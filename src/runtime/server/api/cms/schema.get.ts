@@ -5,15 +5,14 @@ export default defineEventHandler(async (event) => {
   // Require authentication
   await requireAuth(event)
 
-  // TODO: Read cms.config.ts and return schema
-  // For now, return empty config - this will be populated from the module
   const config = useRuntimeConfig()
+  const cmsConfig = config.cms.config
 
   return {
-    locales: ['es', 'en'],
-    defaultLocale: 'es',
+    locales: cmsConfig?.locales || ['en'],
+    defaultLocale: cmsConfig?.defaultLocale || 'en',
     adminPath: config.public.cms.adminPath,
-    collections: {},
-    singletons: {}
+    collections: cmsConfig?.collections || {},
+    singletons: cmsConfig?.singletons || {}
   }
 })

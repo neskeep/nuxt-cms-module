@@ -8,9 +8,15 @@ importers:
 
   .:
     dependencies:
+      '@iconify-json/heroicons':
+        specifier: ^1.2.2
+        version: 1.2.3
       '@nuxt/kit':
         specifier: ^3.16.2
         version: 3.20.1(magicast@0.5.1)
+      '@nuxt/ui':
+        specifier: ^3.0.2
+        version: 3.3.7(@babel/parser@7.28.5)(db0@0.3.4(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@types/better-sqlite3@7.6.13)(better-sqlite3@11.10.0)(postgres@3.4.7)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@3.25.76)
       '@tiptap/extension-image':
         specifier: ^2.11.2
         version: 2.27.1(@tiptap/core@2.27.1(@tiptap/pm@2.27.1))
@@ -50,6 +56,9 @@ importers:
       isomorphic-dompurify:
         specifier: ^2.20.0
         version: 2.34.0(postcss@8.5.6)
+      jiti:
+        specifier: ^2.4.2
+        version: 2.6.1
       jose:
         specifier: ^5.9.6
         version: 5.10.0
@@ -72,9 +81,6 @@ importers:
       '@nuxt/test-utils':
         specifier: ^3.15.4
         version: 3.21.0(jsdom@27.3.0(postcss@8.5.6))(magicast@0.5.1)(typescript@5.9.3)(vitest@2.1.9(@types/node@24.10.2)(jsdom@27.3.0(postcss@8.5.6))(lightningcss@1.30.2)(terser@5.44.1))
-      '@nuxt/ui':
-        specifier: ^3.0.2
-        version: 3.3.7(@babel/parser@7.28.5)(db0@0.3.4(better-sqlite3@11.10.0)(drizzle-orm@0.38.4(@types/better-sqlite3@7.6.13)(better-sqlite3@11.10.0)(postgres@3.4.7)))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.5.1)(typescript@5.9.3)(vite@7.2.7(@types/node@24.10.2)(jiti@2.6.1)(lightningcss@1.30.2)(terser@5.44.1)(yaml@2.8.2))(vue-router@4.6.3(vue@3.5.25(typescript@5.9.3)))(vue@3.5.25(typescript@5.9.3))(zod@3.25.76)
       '@types/bcryptjs':
         specifier: ^2.4.6
         version: 2.4.6
@@ -1058,6 +1064,9 @@ packages:
 
   '@floating-ui/vue@1.1.9':
     resolution: {integrity: sha512-BfNqNW6KA83Nexspgb9DZuz578R7HT8MZw1CfK9I6Ah4QReNWEJsXWHN+SdmOVLNGmTPDi+fDT535Df5PzMLbQ==}
+
+  '@iconify-json/heroicons@1.2.3':
+    resolution: {integrity: sha512-n+vmCEgTesRsOpp5AB5ILB6srsgsYK+bieoQBNlafvoEhjVXLq8nIGN4B0v/s4DUfa0dOrjwE/cKJgIKdJXOEg==}
 
   '@iconify/collections@1.0.627':
     resolution: {integrity: sha512-IG6Gv+JQJEyJxwrKjOIpOizUzK82RrpDI2Rk92iTJWbfK3hY+LrBK6YhjXT3b9zAN5wYqseCpPznQHgRacmogg==}
@@ -6010,6 +6019,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@iconify-json/heroicons@1.2.3':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify/collections@1.0.627':
     dependencies:

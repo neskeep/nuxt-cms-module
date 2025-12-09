@@ -103,7 +103,7 @@ function handleCancel() {
 
       <!-- Form -->
       <div class="form-card">
-        <CmsFormForm
+        <CmsForm
           :fields="singletonConfig.fields"
           v-model="formData"
           v-model:translations="translations"
@@ -133,7 +133,7 @@ function handleCancel() {
               </UButton>
             </div>
           </template>
-        </CmsFormForm>
+        </CmsForm>
       </div>
     </div>
   </CmsAdminLayout>

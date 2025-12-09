@@ -7,14 +7,83 @@ import {
   addRouteMiddleware,
   extendPages,
   addServerPlugin,
-  installModule
+  installModule,
+  useNuxt
 } from '@nuxt/kit'
 import type { NuxtModule } from '@nuxt/schema'
 import { defu } from 'defu'
+import { existsSync } from 'fs'
+import { join } from 'path'
 import type { CmsModuleOptions, CmsConfig } from './runtime/types'
 
 export type { CmsModuleOptions, CmsConfig }
 export { defineCmsConfig } from './runtime/types'
+
+/**
+ * Load cms.config.ts from the project root using jiti (TypeScript support)
+ */
+async function loadCmsConfig(rootDir: string): Promise<CmsConfig | null> {
+  const configPathTs = join(rootDir, 'cms.config.ts')
+  const configPathJs = join(rootDir, 'cms.config.js')
+
+  let finalPath: string | null = null
+
+  console.log('[@neskeep/nuxt-cms] Looking for cms.config in:', rootDir)
+
+  if (existsSync(configPathTs)) {
+    console.log('[@neskeep/nuxt-cms] Found cms.config.ts')
+    finalPath = configPathTs
+  } else if (existsSync(configPathJs)) {
+    console.log('[@neskeep/nuxt-cms] Found cms.config.js')
+    finalPath = configPathJs
+  }
+
+  if (!finalPath) {
+    console.warn('[@neskeep/nuxt-cms] No cms.config.ts or cms.config.js found. Collections and singletons will be empty.')
+    return null
+  }
+
+  try {
+    // Use jiti for TypeScript support (same as Nuxt uses internally)
+    const { createJiti } = await import('jiti')
+    const aliasPath = join(rootDir, 'node_modules/@neskeep/nuxt-cms/dist/runtime/types/config.js')
+    console.log('[@neskeep/nuxt-cms] Using alias path:', aliasPath)
+    const jiti = createJiti(rootDir, {
+      interopDefault: true,
+      // Map the module import to our types file which exports defineCmsConfig
+      alias: {
+        '@neskeep/nuxt-cms': aliasPath
+      }
+    })
+    const configModule = await jiti.import(finalPath)
+    const config = (configModule as any).default || configModule
+    console.log('[@neskeep/nuxt-cms] Loaded config:', JSON.stringify({
+      collections: config?.collections ? Object.keys(config.collections) : [],
+      singletons: config?.singletons ? Object.keys(config.singletons) : [],
+      locales: config?.locales,
+      collectionsDetail: config?.collections
+    }, null, 2))
+    return config as CmsConfig
+  } catch (error: any) {
+    console.log('[@neskeep/nuxt-cms] First attempt failed:', error?.message)
+    // Try without the alias as a fallback (maybe the user didn't use defineCmsConfig)
+    try {
+      const { createJiti } = await import('jiti')
+      const jiti = createJiti(rootDir, { interopDefault: true })
+      const configModule = await jiti.import(finalPath)
+      const config = (configModule as any).default || configModule
+      console.log('[@neskeep/nuxt-cms] Loaded config (fallback):', JSON.stringify({
+        collections: config?.collections ? Object.keys(config.collections) : [],
+        singletons: config?.singletons ? Object.keys(config.singletons) : [],
+        locales: config?.locales
+      }, null, 2))
+      return config as CmsConfig
+    } catch (fallbackError: any) {
+      console.error('[@neskeep/nuxt-cms] Error loading cms.config:', fallbackError?.message || fallbackError)
+      return null
+    }
+  }
+}
 
 const MODULE_NAME = '@neskeep/nuxt-cms'
 
@@ -58,6 +127,9 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
     // Install Nuxt UI module (required for admin panel components)
     await installModule('@nuxt/ui')
 
+    // Load cms.config.ts from project root
+    const cmsConfig = await loadCmsConfig(nuxt.options.rootDir)
+
     // Merge options with defaults
     const moduleOptions = defu(options, {
       database: {
@@ -96,7 +168,14 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
         credentials: moduleOptions.admin.credentials
       },
       uploads: moduleOptions.uploads,
-      jwtSecret: process.env.CMS_JWT_SECRET || 'change-this-secret-in-production'
+      jwtSecret: process.env.CMS_JWT_SECRET || 'change-this-secret-in-production',
+      // Include CMS config (collections, singletons, locales)
+      config: cmsConfig || {
+        locales: ['en'],
+        defaultLocale: 'en',
+        collections: {},
+        singletons: {}
+      }
     }
 
     nuxt.options.runtimeConfig.public.cms = {
@@ -156,10 +235,10 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
       global: true
     })
 
-    // Add form components
+    // Add form components (prefix 'Cms' so Form.vue becomes CmsForm)
     addComponentsDir({
       path: resolver.resolve('./runtime/components/form'),
-      prefix: 'CmsForm',
+      prefix: 'Cms',
       global: true
     })
 
@@ -268,6 +347,12 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
       route: '/api/cms/media/:id',
       method: 'delete',
       handler: resolver.resolve('./runtime/server/api/cms/media/[id].delete')
+    })
+
+    addServerHandler({
+      route: '/api/cms/media/file/:filename',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/media/file/[filename].get')
     })
 
     // Add admin pages if enabled
