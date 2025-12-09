@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useRuntimeConfig, useRoute } from '#imports'
+import { useCmsAdmin } from '../../composables/useCmsAdmin'
+
 const { user, logout } = useCmsAdmin()
 const config = useRuntimeConfig()
 const route = useRoute()
