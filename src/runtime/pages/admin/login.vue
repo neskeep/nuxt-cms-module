@@ -92,39 +92,41 @@ onMounted(async () => {
 
         <!-- Form -->
         <form @submit.prevent="handleSubmit" class="login__form">
-          <UFormField label="Username" required>
-            <UInput
-              v-model="form.username"
-              type="text"
-              variant="outline"
-              placeholder="Enter your username"
-              icon="i-heroicons-user"
-              size="lg"
-              autofocus
-            />
-          </UFormField>
+          <div class="login__field">
+            <label class="login__label">Username <span class="login__required">*</span></label>
+            <div class="login__input-wrapper">
+              <UIcon name="i-heroicons-user" class="login__input-icon" />
+              <input
+                v-model="form.username"
+                type="text"
+                placeholder="Enter your username"
+                class="login__input"
+                autofocus
+              />
+            </div>
+          </div>
 
-          <UFormField label="Password" required>
-            <UInput
-              v-model="form.password"
-              type="password"
-              variant="outline"
-              placeholder="Enter your password"
-              icon="i-heroicons-lock-closed"
-              size="lg"
-            />
-          </UFormField>
+          <div class="login__field">
+            <label class="login__label">Password <span class="login__required">*</span></label>
+            <div class="login__input-wrapper">
+              <UIcon name="i-heroicons-lock-closed" class="login__input-icon" />
+              <input
+                v-model="form.password"
+                type="password"
+                placeholder="Enter your password"
+                class="login__input"
+              />
+            </div>
+          </div>
 
-          <UButton
+          <button
             type="submit"
-            color="primary"
-            size="xl"
-            block
-            :loading="loading"
+            :disabled="loading"
             class="login__submit"
           >
+            <span v-if="loading" class="login__spinner"></span>
             Sign in
-          </UButton>
+          </button>
         </form>
 
         <!-- Footer -->
@@ -352,10 +354,116 @@ onMounted(async () => {
   gap: 20px;
 }
 
+/* Field */
+.login__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.login__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+:root.dark .login__label {
+  color: #d1d5db;
+}
+
+.login__required {
+  color: #dc2626;
+}
+
+.login__input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.login__input-icon {
+  position: absolute;
+  left: 12px;
+  width: 20px;
+  height: 20px;
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.login__input {
+  width: 100%;
+  padding: 12px 12px 12px 44px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: white;
+  color: #111827;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login__input::placeholder {
+  color: #9ca3af;
+}
+
+.login__input:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+:root.dark .login__input {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #f3f4f6;
+}
+
+:root.dark .login__input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+/* Submit Button */
 .login__submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   margin-top: 8px;
+  padding: 14px 24px;
+  font-size: 16px;
   font-weight: 600;
-  height: 48px;
+  color: white;
+  background-color: #2563eb;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.login__submit:hover {
+  background-color: #1d4ed8;
+}
+
+.login__submit:active {
+  transform: scale(0.98);
+}
+
+.login__submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.login__spinner {
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 /* Footer */
