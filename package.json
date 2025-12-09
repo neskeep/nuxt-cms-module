@@ -15,7 +15,8 @@
   "module": "./dist/module.mjs",
   "types": "./dist/types.d.ts",
   "bin": {
-    "nuxt-cms-init": "./scripts/init.mjs"
+    "nuxt-cms-init": "./scripts/init.mjs",
+    "nuxt-cms-uninstall": "./scripts/uninstall.mjs"
   },
   "files": [
     "dist",

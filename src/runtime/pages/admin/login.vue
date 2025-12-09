@@ -136,15 +136,16 @@ onMounted(async () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 /* ============================================
    Login Page - Modern Minimal Design
+   Scoped styles to avoid conflicts with host app
    ============================================ */
 
 .login {
   min-height: 100vh;
   display: flex;
-  background-color: #f9fafb;
+  background-color: #f9fafb !important;
 }
 
 :root.dark .login {

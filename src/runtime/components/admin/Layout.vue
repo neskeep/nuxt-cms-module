@@ -139,47 +139,30 @@ watch(() => route.path, () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 /* ============================================
    CMS Admin Layout - Modern Minimal Design
+   Scoped styles to avoid conflicts with host app
    ============================================ */
 
-/* CSS Variables for theming */
-:root {
+/* Layout Container - using direct colors for isolation */
+.cms-layout {
   --cms-sidebar-width: 260px;
   --cms-topbar-height: 64px;
-  --cms-primary: #2563eb;
-  --cms-primary-light: #eff6ff;
-  --cms-primary-dark: #1d4ed8;
-  --cms-gray-50: #f9fafb;
-  --cms-gray-100: #f3f4f6;
-  --cms-gray-200: #e5e7eb;
-  --cms-gray-300: #d1d5db;
-  --cms-gray-400: #9ca3af;
-  --cms-gray-500: #6b7280;
-  --cms-gray-600: #4b5563;
-  --cms-gray-700: #374151;
-  --cms-gray-800: #1f2937;
-  --cms-gray-900: #111827;
-  --cms-gray-950: #030712;
-}
-
-/* Layout Container */
-.cms-layout {
   display: flex;
   min-height: 100vh;
-  background-color: var(--cms-gray-50);
+  background-color: #f9fafb !important;
 }
 
-:root.dark .cms-layout {
-  background-color: var(--cms-gray-950);
+.cms-layout.dark {
+  background-color: #030712 !important;
 }
 
 /* Mobile Overlay */
 .cms-overlay {
   position: fixed;
   inset: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5) !important;
   z-index: 40;
   backdrop-filter: blur(4px);
 }
@@ -209,8 +192,8 @@ watch(() => route.path, () => {
   left: 0;
   bottom: 0;
   width: var(--cms-sidebar-width);
-  background-color: white;
-  border-right: 1px solid var(--cms-gray-200);
+  background-color: #ffffff !important;
+  border-right: 1px solid #e5e7eb !important;
   display: flex;
   flex-direction: column;
   z-index: 50;
@@ -228,11 +211,6 @@ watch(() => route.path, () => {
   }
 }
 
-:root.dark .cms-sidebar {
-  background-color: var(--cms-gray-900);
-  border-right-color: var(--cms-gray-800);
-}
-
 /* Sidebar Header */
 .cms-sidebar__header {
   height: var(--cms-topbar-height);
@@ -240,12 +218,8 @@ watch(() => route.path, () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--cms-gray-200);
+  border-bottom: 1px solid #e5e7eb !important;
   flex-shrink: 0;
-}
-
-:root.dark .cms-sidebar__header {
-  border-bottom-color: var(--cms-gray-800);
 }
 
 .cms-sidebar__close {
@@ -255,28 +229,22 @@ watch(() => route.path, () => {
   width: 36px;
   height: 36px;
   border-radius: 8px;
-  color: var(--cms-gray-500);
+  color: #6b7280 !important;
   transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .cms-sidebar__close:hover {
-  background-color: var(--cms-gray-100);
-  color: var(--cms-gray-700);
+  background-color: #f3f4f6 !important;
+  color: #374151 !important;
 }
 
 @media (min-width: 1024px) {
   .cms-sidebar__close {
     display: none;
   }
-}
-
-:root.dark .cms-sidebar__close {
-  color: var(--cms-gray-400);
-}
-
-:root.dark .cms-sidebar__close:hover {
-  background-color: var(--cms-gray-800);
-  color: var(--cms-gray-200);
 }
 
 /* Logo */
@@ -289,7 +257,7 @@ watch(() => route.path, () => {
 .cms-logo__icon {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, var(--cms-primary) 0%, var(--cms-primary-dark) 100%);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
   border-radius: 10px;
   display: flex;
   align-items: center;
@@ -306,18 +274,14 @@ watch(() => route.path, () => {
 .cms-logo__svg {
   width: 20px;
   height: 20px;
-  color: white;
+  color: #ffffff !important;
 }
 
 .cms-logo__text {
   font-size: 18px;
   font-weight: 700;
-  color: var(--cms-gray-900);
+  color: #111827 !important;
   letter-spacing: -0.02em;
-}
-
-:root.dark .cms-logo__text {
-  color: white;
 }
 
 /* Navigation */
@@ -338,43 +302,24 @@ watch(() => route.path, () => {
   border-radius: 10px;
   font-size: 14px;
   font-weight: 500;
-  color: var(--cms-gray-600);
-  text-decoration: none;
+  color: #4b5563 !important;
+  text-decoration: none !important;
   transition: all 0.15s ease;
 }
 
 .cms-nav__item:hover {
-  background-color: var(--cms-gray-100);
-  color: var(--cms-gray-900);
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
 }
 
 .cms-nav__item--active {
-  background-color: var(--cms-primary-light);
-  color: var(--cms-primary);
+  background-color: #eff6ff !important;
+  color: #2563eb !important;
 }
 
 .cms-nav__item--active:hover {
-  background-color: var(--cms-primary-light);
-  color: var(--cms-primary);
-}
-
-:root.dark .cms-nav__item {
-  color: var(--cms-gray-400);
-}
-
-:root.dark .cms-nav__item:hover {
-  background-color: var(--cms-gray-800);
-  color: white;
-}
-
-:root.dark .cms-nav__item--active {
-  background-color: rgba(37, 99, 235, 0.15);
-  color: #60a5fa;
-}
-
-:root.dark .cms-nav__item--active:hover {
-  background-color: rgba(37, 99, 235, 0.15);
-  color: #60a5fa;
+  background-color: #eff6ff !important;
+  color: #2563eb !important;
 }
 
 .cms-nav__icon {
@@ -390,12 +335,8 @@ watch(() => route.path, () => {
 /* User Section */
 .cms-user {
   padding: 12px;
-  border-top: 1px solid var(--cms-gray-200);
+  border-top: 1px solid #e5e7eb !important;
   flex-shrink: 0;
-}
-
-:root.dark .cms-user {
-  border-top-color: var(--cms-gray-800);
 }
 
 .cms-user__button {
@@ -405,7 +346,7 @@ watch(() => route.path, () => {
   gap: 12px;
   padding: 10px 12px;
   border-radius: 10px;
-  background: transparent;
+  background: transparent !important;
   border: none;
   cursor: pointer;
   transition: background-color 0.15s ease;
@@ -413,11 +354,7 @@ watch(() => route.path, () => {
 }
 
 .cms-user__button:hover {
-  background-color: var(--cms-gray-100);
-}
-
-:root.dark .cms-user__button:hover {
-  background-color: var(--cms-gray-800);
+  background-color: #f3f4f6 !important;
 }
 
 .cms-user__avatar {
@@ -434,32 +371,24 @@ watch(() => route.path, () => {
 .cms-user__name {
   font-size: 14px;
   font-weight: 500;
-  color: var(--cms-gray-900);
+  color: #111827 !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-:root.dark .cms-user__name {
-  color: white;
 }
 
 .cms-user__role {
   font-size: 12px;
-  color: var(--cms-gray-500);
+  color: #6b7280 !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-:root.dark .cms-user__role {
-  color: var(--cms-gray-400);
 }
 
 .cms-user__chevron {
   width: 16px;
   height: 16px;
-  color: var(--cms-gray-400);
+  color: #9ca3af !important;
   flex-shrink: 0;
 }
 
@@ -486,8 +415,8 @@ watch(() => route.path, () => {
   display: flex;
   align-items: center;
   gap: 16px;
-  background-color: white;
-  border-bottom: 1px solid var(--cms-gray-200);
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e5e7eb !important;
   flex-shrink: 0;
 }
 
@@ -497,11 +426,6 @@ watch(() => route.path, () => {
   }
 }
 
-:root.dark .cms-topbar {
-  background-color: var(--cms-gray-900);
-  border-bottom-color: var(--cms-gray-800);
-}
-
 .cms-topbar__menu {
   display: flex;
   align-items: center;
@@ -509,22 +433,16 @@ watch(() => route.path, () => {
   width: 40px;
   height: 40px;
   border-radius: 10px;
-  color: var(--cms-gray-600);
+  color: #4b5563 !important;
   transition: all 0.15s ease;
+  background: transparent;
+  border: none;
+  cursor: pointer;
 }
 
 .cms-topbar__menu:hover {
-  background-color: var(--cms-gray-100);
-  color: var(--cms-gray-900);
-}
-
-:root.dark .cms-topbar__menu {
-  color: var(--cms-gray-400);
-}
-
-:root.dark .cms-topbar__menu:hover {
-  background-color: var(--cms-gray-800);
-  color: white;
+  background-color: #f3f4f6 !important;
+  color: #111827 !important;
 }
 
 .cms-topbar__logo {
