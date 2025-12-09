@@ -28,7 +28,29 @@ yarn add github:IsraSenior/nuxt-cms-module
 
 ## Quick Start
 
-### 1. Add module to nuxt.config.ts
+### Option A: Automatic Setup (Recommended)
+
+After installing the module, run the init command:
+
+```bash
+# pnpm
+pnpm exec nuxt-cms-init
+
+# npm
+npx nuxt-cms-init
+
+# yarn
+yarn nuxt-cms-init
+```
+
+This will automatically:
+- Add `@neskeep/nuxt-cms` to your `nuxt.config.ts` modules
+- Add default CMS configuration
+- Create a `cms.config.ts` with example collections
+
+### Option B: Manual Setup
+
+#### 1. Add module to nuxt.config.ts
 
 ```ts
 export default defineNuxtConfig({
@@ -51,7 +73,7 @@ export default defineNuxtConfig({
 })
 ```
 
-### 2. Create cms.config.ts
+#### 2. Create cms.config.ts
 
 Create a `cms.config.ts` file in your project root:
 
