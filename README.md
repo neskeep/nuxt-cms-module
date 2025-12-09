@@ -48,6 +48,10 @@ This will automatically:
 - Add default CMS configuration
 - Create a `cms.config.ts` with example collections
 
+**Default credentials after init:** `admin` / `admin123`
+
+> ⚠️ **Important:** Change the default password in `nuxt.config.ts` before deploying to production!
+
 ### Option B: Manual Setup
 
 #### 1. Add module to nuxt.config.ts
@@ -634,6 +638,73 @@ type Post = {
 
 const { items } = useCmsCollection<Post>('posts')
 ```
+
+## Uninstallation
+
+To completely remove the CMS module from your project:
+
+### Option A: Automatic Cleanup (Recommended)
+
+Run the uninstall script:
+
+```bash
+# pnpm
+pnpm exec nuxt-cms-uninstall
+
+# npm
+npx nuxt-cms-uninstall
+
+# yarn
+yarn nuxt-cms-uninstall
+```
+
+This will:
+- Remove `@neskeep/nuxt-cms` from your `nuxt.config.ts` modules
+- Remove the `cms:` configuration block from `nuxt.config.ts`
+- Optionally delete `cms.config.ts`
+- Optionally delete the `.cms` folder (database + uploads)
+
+Then remove the package:
+
+```bash
+pnpm remove @neskeep/nuxt-cms
+```
+
+### Option B: Manual Cleanup
+
+1. Remove the module from `nuxt.config.ts`:
+   - Delete `'@neskeep/nuxt-cms'` from the `modules` array
+   - Delete the entire `cms: { ... }` configuration block
+
+2. Delete the configuration file:
+   ```bash
+   rm cms.config.ts
+   ```
+
+3. Delete the CMS data folder (optional):
+   ```bash
+   rm -rf .cms
+   ```
+
+4. Remove the package:
+   ```bash
+   pnpm remove @neskeep/nuxt-cms
+   ```
+
+5. Clean and restart:
+   ```bash
+   rm -rf .nuxt && pnpm dev
+   ```
+
+## Compatibility
+
+This module is compatible with:
+- **Nuxt 3.16+** and **Nuxt 4.x**
+- **Tailwind CSS v3** and **v4** (styles are isolated to prevent conflicts)
+
+### Tailwind CSS v4 Note
+
+The CMS admin panel uses scoped CSS with `!important` declarations to ensure styles are properly isolated from your host application's Tailwind configuration. This prevents the `--color-*: initial` reset in Tailwind v4 from affecting CMS components.
 
 ## Development
 
