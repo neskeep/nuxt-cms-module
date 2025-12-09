@@ -1,3 +1,6 @@
+import { defineNuxtRouteMiddleware, useRuntimeConfig, navigateTo } from '#imports'
+import { useCmsAdmin } from '../composables/useCmsAdmin'
+
 export default defineNuxtRouteMiddleware(async (to) => {
   const config = useRuntimeConfig()
   const adminPath = config.public.cms.adminPath
