@@ -20,12 +20,11 @@
     "scripts"
   ],
   "scripts": {
-    "postinstall": "node scripts/postinstall.mjs",
+    "prepare": "nuxt-module-build build && node scripts/postinstall.mjs",
     "dev": "nuxi dev playground",
     "dev:build": "nuxi build playground",
     "dev:prepare": "nuxt-module-build build --stub && nuxt-module-build prepare && nuxi prepare playground",
     "build": "nuxt-module-build build",
-    "prepublishOnly": "pnpm build",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "lint": "eslint .",
