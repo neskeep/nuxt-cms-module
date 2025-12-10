@@ -1,8 +1,15 @@
 import { defineEventHandler, readBody, createError } from '#imports'
-import { loginUser, setAuthCookie } from '../../../utils/auth'
+import { loginUser, setAuthCookie, validateJwtSecret } from '../../../utils/auth'
 import { loginSchema } from '../../../utils/validation'
+import { checkRateLimit, resetRateLimit, RATE_LIMITS } from '../../../utils/rateLimit'
 
 export default defineEventHandler(async (event) => {
+  // Validate JWT secret is configured
+  validateJwtSecret()
+
+  // Check rate limit before processing
+  checkRateLimit(event, RATE_LIMITS.login, 'login')
+
   const body = await readBody(event)
 
   // Validate input
@@ -26,6 +33,9 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Invalid credentials'
     })
   }
+
+  // Reset rate limit on successful login
+  resetRateLimit(event, 'login')
 
   // Set auth cookie
   setAuthCookie(event, loginResult.token)
