@@ -31,22 +31,23 @@ const required = computed(() => props.field.required || false)
 </script>
 
 <template>
-  <UFormField
-    :label="label"
-    :required="required"
-    :help="help"
-    :error="error"
-  >
-    <UInput
+  <div class="cms-field">
+    <label class="cms-field__label">
+      {{ label }}
+      <span v-if="required" class="cms-field__required">*</span>
+    </label>
+    <input
       v-model.number="value"
       type="number"
-      variant="outline"
+      class="cms-field__input"
+      :class="{ 'cms-field__input--error': error, 'cms-field__input--disabled': disabled }"
       :placeholder="placeholder"
       :disabled="disabled"
       :min="field.min"
       :max="field.max"
       :step="field.step || 1"
-      class="w-full"
     />
-  </UFormField>
+    <p v-if="help && !error" class="cms-field__help">{{ help }}</p>
+    <p v-if="error" class="cms-field__error">{{ error }}</p>
+  </div>
 </template>
