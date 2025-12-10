@@ -9,6 +9,75 @@ import type { SafeCmsUser, JwtPayload, UserRole } from '../../types'
 const BCRYPT_ROUNDS = 12
 const JWT_EXPIRATION = '7d'
 const COOKIE_NAME = 'cms_session'
+const DEFAULT_JWT_SECRET = 'change-this-secret-in-production'
+
+// Password policy constants
+const PASSWORD_MIN_LENGTH = 8
+const PASSWORD_REQUIRES_UPPERCASE = true
+const PASSWORD_REQUIRES_LOWERCASE = true
+const PASSWORD_REQUIRES_NUMBER = true
+
+/**
+ * Validate JWT secret is properly configured
+ */
+export function validateJwtSecret(): void {
+  const config = useRuntimeConfig()
+  const secret = config.cms?.jwtSecret
+
+  if (!secret || secret === DEFAULT_JWT_SECRET) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error(
+        '[CMS Security Error] JWT secret is not configured or using default value. ' +
+        'Set CMS_JWT_SECRET environment variable with a strong random string (min 32 characters).'
+      )
+    } else {
+      console.warn(
+        '[CMS Warning] Using default JWT secret. This is insecure for production. ' +
+        'Set CMS_JWT_SECRET environment variable.'
+      )
+    }
+  }
+
+  if (secret && secret.length < 32) {
+    console.warn('[CMS Warning] JWT secret should be at least 32 characters for security.')
+  }
+}
+
+/**
+ * Password policy validation result
+ */
+export interface PasswordValidationResult {
+  valid: boolean
+  errors: string[]
+}
+
+/**
+ * Validate password against security policy
+ */
+export function validatePassword(password: string): PasswordValidationResult {
+  const errors: string[] = []
+
+  if (!password || password.length < PASSWORD_MIN_LENGTH) {
+    errors.push(`Password must be at least ${PASSWORD_MIN_LENGTH} characters`)
+  }
+
+  if (PASSWORD_REQUIRES_UPPERCASE && !/[A-Z]/.test(password)) {
+    errors.push('Password must contain at least one uppercase letter')
+  }
+
+  if (PASSWORD_REQUIRES_LOWERCASE && !/[a-z]/.test(password)) {
+    errors.push('Password must contain at least one lowercase letter')
+  }
+
+  if (PASSWORD_REQUIRES_NUMBER && !/[0-9]/.test(password)) {
+    errors.push('Password must contain at least one number')
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors
+  }
+}
 
 /**
  * Hash a password
