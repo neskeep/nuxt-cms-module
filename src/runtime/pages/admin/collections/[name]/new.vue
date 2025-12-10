@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { definePageMeta, useRoute, useRuntimeConfig, useFetch, navigateTo } from '#imports'
+import CmsPageHeader from '../../../../components/layout/PageHeader.vue'
+import CmsFormCard from '../../../../components/layout/FormCard.vue'
 
 definePageMeta({
   middleware: 'cms-auth'

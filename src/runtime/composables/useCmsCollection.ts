@@ -9,10 +9,20 @@ export interface UseCmsCollectionOptions extends ContentQueryOptions {
   watch?: boolean
   /** Lazy load (don't fetch immediately) */
   lazy?: boolean
+  /** Use authenticated API (for admin) instead of public API */
+  authenticated?: boolean
+  /** Filter by status (default: 'published' for public, 'all' for authenticated) */
+  status?: 'published' | 'draft' | 'all'
+  /** Sort field (prefix with - for descending, e.g. '-createdAt') */
+  sort?: string
+  /** Search query */
+  search?: string
 }
 
 /**
  * Composable for fetching collection items
+ * Uses public API by default (no auth required, only published items)
+ * Set authenticated: true for admin panel usage
  */
 export function useCmsCollection<T = Record<string, unknown>>(
   collection: string,
@@ -26,17 +36,30 @@ export function useCmsCollection<T = Record<string, unknown>>(
     locale,
     includeDrafts = false,
     key,
-    lazy = false
+    lazy = false,
+    authenticated = false,
+    status,
+    sort,
+    search
   } = options
+
+  // Determine API endpoint (public vs authenticated)
+  const apiBase = authenticated ? '/api/cms/collections' : '/api/cms/public/collections'
 
   // Build query params
   const queryParams = computed(() => {
     const params: Record<string, string | number | boolean> = {}
 
-    if (limit) params.perPage = limit
+    if (limit) params.limit = limit
     if (offset) params.page = Math.floor(offset / (limit || 20)) + 1
     if (locale) params.locale = locale
-    if (includeDrafts) params.status = 'draft'
+    if (status) params.status = status
+    if (sort) params.sort = sort
+    if (search) params.search = search
+
+    // Legacy support for includeDrafts
+    if (includeDrafts && !status) params.status = 'all'
+
     if (orderBy) {
       const [field, direction] = Object.entries(orderBy)[0] || []
       if (field) {
@@ -49,9 +72,9 @@ export function useCmsCollection<T = Record<string, unknown>>(
   })
 
   // Fetch data
-  const { data, pending, error, refresh } = useAsyncData<PaginatedResponse<T>>(
-    key || `cms-collection-${collection}`,
-    () => $fetch(`/api/cms/collections/${collection}`, {
+  const { data: rawData, pending, error, refresh } = useAsyncData(
+    key || `cms-collection-${collection}-${authenticated ? 'auth' : 'public'}`,
+    () => $fetch(`${apiBase}/${collection}`, {
       params: queryParams.value
     }),
     {
@@ -60,12 +83,23 @@ export function useCmsCollection<T = Record<string, unknown>>(
     }
   )
 
-  // Computed values
-  const items = computed(() => (data.value?.data as T[]) || [])
-  const meta = computed(() => data.value?.meta)
-  const total = computed(() => meta.value?.total || 0)
-  const page = computed(() => meta.value?.page || 1)
-  const totalPages = computed(() => meta.value?.totalPages || 0)
+  // Computed values - handle both response formats
+  const data = computed(() => {
+    if (!rawData.value) return []
+    // Public API returns { items, total, page, ... }
+    // Authenticated API returns { data, meta }
+    return (rawData.value as any).items || (rawData.value as any).data || []
+  })
+
+  const items = computed(() => data.value as T[])
+  const total = computed(() => (rawData.value as any)?.total || (rawData.value as any)?.meta?.total || 0)
+  const page = computed(() => (rawData.value as any)?.page || (rawData.value as any)?.meta?.page || 1)
+  const totalPages = computed(() => (rawData.value as any)?.totalPages || (rawData.value as any)?.meta?.totalPages || 0)
+  const meta = computed(() => ({
+    total: total.value,
+    page: page.value,
+    totalPages: totalPages.value
+  }))
 
   /**
    * Fetch a single item by ID

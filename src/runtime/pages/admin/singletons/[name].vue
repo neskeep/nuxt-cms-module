@@ -2,6 +2,9 @@
 import { ref, computed, watch } from 'vue'
 import { definePageMeta, useRoute, useRuntimeConfig, useFetch, navigateTo } from '#imports'
 import { useCmsSingleton } from '../../../composables/useCmsSingleton'
+import CmsPageHeader from '../../../components/layout/PageHeader.vue'
+import CmsFormCard from '../../../components/layout/FormCard.vue'
+import CmsAlert from '../../../components/layout/Alert.vue'
 
 definePageMeta({
   middleware: 'cms-auth'
@@ -22,7 +25,7 @@ const locales = computed(() => schema.value?.locales || ['es'])
 const defaultLocale = computed(() => schema.value?.defaultLocale || 'es')
 
 // Fetch singleton data
-const { data: singleton, update, refresh } = useCmsSingleton(singletonName)
+const { data: singletonData, rawData, translations: singletonTranslations, update, refresh } = useCmsSingleton(singletonName)
 
 // Form state
 const formData = ref<Record<string, unknown>>({})
@@ -38,13 +41,11 @@ const breadcrumbs = computed(() => [
   { label: singletonConfig.value.label }
 ])
 
-// Watch for singleton data
-watch(() => singleton.value, () => {
-  // Get raw data from the response
-  const rawData = (singleton as any).rawData?.value
-  if (rawData) {
-    formData.value = rawData.data || {}
-    translations.value = rawData.translations || {}
+// Watch for singleton data changes
+watch(rawData, (newRawData) => {
+  if (newRawData) {
+    formData.value = newRawData.data || {}
+    translations.value = newRawData.translations || {}
   }
 }, { immediate: true })
 

@@ -8,6 +8,8 @@ export interface UseCmsSingletonOptions {
   key?: string
   /** Lazy load (don't fetch immediately) */
   lazy?: boolean
+  /** Use authenticated API (for admin) instead of public API */
+  authenticated?: boolean
 }
 
 /**
@@ -17,12 +19,15 @@ export function useCmsSingleton<T = Record<string, unknown>>(
   name: string,
   options: UseCmsSingletonOptions = {}
 ) {
-  const { locale, key, lazy = false } = options
+  const { locale, key, lazy = false, authenticated = false } = options
+
+  // Determine API endpoint (public vs authenticated)
+  const apiBase = authenticated ? '/api/cms/singletons' : '/api/cms/public/singletons'
 
   // Fetch singleton data
   const { data: rawData, pending, error, refresh } = useAsyncData(
-    key || `cms-singleton-${name}`,
-    () => $fetch(`/api/cms/singletons/${name}`, {
+    key || `cms-singleton-${name}-${authenticated ? 'auth' : 'public'}`,
+    () => $fetch(`${apiBase}/${name}`, {
       params: locale ? { locale } : undefined
     }),
     {

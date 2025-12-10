@@ -365,6 +365,19 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
       handler: resolver.resolve('./runtime/server/api/cms/media/file/[filename].get')
     })
 
+    // Public API (no authentication required)
+    addServerHandler({
+      route: '/api/cms/public/collections/:name',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/public/collections/[name].get')
+    })
+
+    addServerHandler({
+      route: '/api/cms/public/singletons/:name',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/public/singletons/[name].get')
+    })
+
     // Add admin pages if enabled
     if (moduleOptions.admin.enabled) {
       const adminPath = moduleOptions.admin.path

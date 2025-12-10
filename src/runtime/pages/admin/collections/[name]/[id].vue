@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { definePageMeta, useRoute, useRuntimeConfig, useFetch, navigateTo } from '#imports'
+import CmsPageHeader from '../../../../components/layout/PageHeader.vue'
+import CmsFormCard from '../../../../components/layout/FormCard.vue'
+import CmsConfirmModal from '../../../../components/layout/ConfirmModal.vue'
 
 definePageMeta({
   middleware: 'cms-auth'
@@ -103,7 +106,7 @@ function handleCancel() {
       <CmsPageHeader
         :title="`Edit ${collectionConfig.label}`"
         :breadcrumbs="breadcrumbs"
-        :status="currentStatus"
+        :status="currentStatus as 'draft' | 'published' | 'archived'"
       >
         <template #actions>
           <!-- Publish Date input (if field exists) -->
