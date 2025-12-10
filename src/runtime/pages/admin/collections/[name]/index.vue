@@ -4,6 +4,7 @@ import { definePageMeta, useRoute, useRuntimeConfig, useFetch, navigateTo } from
 import { useCmsCollection } from '../../../../composables/useCmsCollection'
 
 definePageMeta({
+  layout: false,
   middleware: 'cms-auth'
 })
 

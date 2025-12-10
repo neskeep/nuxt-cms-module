@@ -7,6 +7,7 @@ import CmsFormCard from '../../../components/layout/FormCard.vue'
 import CmsAlert from '../../../components/layout/Alert.vue'
 
 definePageMeta({
+  layout: false,
   middleware: 'cms-auth'
 })
 

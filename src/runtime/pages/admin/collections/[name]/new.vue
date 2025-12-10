@@ -5,6 +5,7 @@ import CmsPageHeader from '../../../../components/layout/PageHeader.vue'
 import CmsFormCard from '../../../../components/layout/FormCard.vue'
 
 definePageMeta({
+  layout: false,
   middleware: 'cms-auth'
 })
 

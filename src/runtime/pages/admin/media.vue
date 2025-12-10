@@ -4,6 +4,7 @@ import { definePageMeta } from '#imports'
 import { useCmsMedia } from '../../composables/useCmsMedia'
 
 definePageMeta({
+  layout: false,
   middleware: 'cms-auth'
 })
 

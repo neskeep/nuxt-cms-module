@@ -4,6 +4,7 @@ import { definePageMeta, useRuntimeConfig, useFetch } from '#imports'
 import { useCmsAdmin } from '../../composables/useCmsAdmin'
 
 definePageMeta({
+  layout: false,
   middleware: 'cms-auth'
 })
 

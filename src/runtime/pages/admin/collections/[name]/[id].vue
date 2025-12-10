@@ -6,6 +6,7 @@ import CmsFormCard from '../../../../components/layout/FormCard.vue'
 import CmsConfirmModal from '../../../../components/layout/ConfirmModal.vue'
 
 definePageMeta({
+  layout: false,
   middleware: 'cms-auth'
 })
 

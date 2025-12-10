@@ -3,6 +3,7 @@ import { computed } from 'vue'
 import { definePageMeta, useRuntimeConfig, useFetch } from '#imports'
 
 definePageMeta({
+  layout: false,
   middleware: 'cms-auth'
 })
 
