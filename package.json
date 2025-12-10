@@ -74,8 +74,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/IsraSenior/nuxt-cms-module"
+    "url": "https://github.com/neskeep/nuxt-cms-module"
   },
+  "homepage": "https://github.com/neskeep/nuxt-cms-module#readme",
+  "bugs": {
+    "url": "https://github.com/neskeep/nuxt-cms-module/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": "Neskeep <dev@neskeep.com>",
   "keywords": [
     "nuxt",
     "nuxt-module",
