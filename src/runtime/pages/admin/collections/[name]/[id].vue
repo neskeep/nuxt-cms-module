@@ -71,6 +71,11 @@ async function handlePublish() {
   await handleSubmit()
 }
 
+async function handleUnpublish() {
+  currentStatus.value = 'draft'
+  await handleSubmit()
+}
+
 async function handleDelete() {
   await $fetch(`/api/cms/collections/${collectionName}/${itemId}`, {
     method: 'DELETE'
@@ -82,20 +87,14 @@ async function handleDelete() {
 function handleCancel() {
   navigateTo(`${config.public.cms.adminPath}/collections/${collectionName}`)
 }
-
-const statusOptions = [
-  { label: 'Draft', value: 'draft' },
-  { label: 'Published', value: 'published' },
-  { label: 'Archived', value: 'archived' }
-]
 </script>
 
 <template>
   <CmsAdminLayout>
     <div class="form-page">
-      <!-- Header -->
+      <!-- Header with Actions -->
       <div class="form-page__header">
-        <div>
+        <div class="form-page__header-left">
           <div class="breadcrumb">
             <NuxtLink
               :to="`${config.public.cms.adminPath}/collections`"
@@ -113,15 +112,64 @@ const statusOptions = [
             <UIcon name="i-heroicons-chevron-right" class="breadcrumb__separator" />
             <span class="breadcrumb__current">Edit</span>
           </div>
-          <h1 class="form-page__title">
-            Edit {{ collectionConfig.label }}
-          </h1>
+          <div class="form-page__title-row">
+            <h1 class="form-page__title">
+              Edit {{ collectionConfig.label }}
+            </h1>
+            <span class="status-badge" :class="`status-badge--${currentStatus}`">
+              {{ currentStatus }}
+            </span>
+          </div>
         </div>
 
-        <div class="form-page__status">
-          <span class="status-badge" :class="`status-badge--${currentStatus}`">
-            {{ currentStatus }}
-          </span>
+        <!-- Actions in Header -->
+        <div class="form-page__actions">
+          <button
+            type="button"
+            class="cms-btn cms-btn--danger-outline"
+            :disabled="saving"
+            @click="showDeleteModal = true"
+          >
+            <UIcon name="i-heroicons-trash" class="cms-btn__icon" />
+            Delete
+          </button>
+          <button
+            type="button"
+            class="cms-btn cms-btn--outline"
+            :disabled="saving"
+            @click="handleCancel"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="cms-btn cms-btn--secondary"
+            :disabled="saving"
+            @click="handleSubmit"
+          >
+            <span v-if="saving" class="cms-btn__spinner"></span>
+            Save Draft
+          </button>
+          <button
+            v-if="currentStatus !== 'published'"
+            type="button"
+            class="cms-btn cms-btn--primary"
+            :disabled="saving"
+            @click="handlePublish"
+          >
+            <UIcon name="i-heroicons-check" class="cms-btn__icon" />
+            Publish
+          </button>
+          <button
+            v-else
+            type="button"
+            class="cms-btn cms-btn--warning"
+            :disabled="saving"
+            @click="handleUnpublish"
+          >
+            <UIcon name="i-heroicons-arrow-uturn-left" class="cms-btn__icon" />
+            Unpublish
+          </button>
         </div>
       </div>
 
@@ -136,50 +184,7 @@ const statusOptions = [
           :errors="errors"
           :disabled="saving"
           @submit="handleSubmit"
-        >
-          <template #actions>
-            <div class="form-actions form-actions--split">
-              <button
-                type="button"
-                class="cms-btn cms-btn--danger-ghost"
-                :disabled="saving"
-                @click="showDeleteModal = true"
-              >
-                <UIcon name="i-heroicons-trash" class="cms-btn__icon" />
-                Delete
-              </button>
-
-              <div class="form-actions__right">
-                <button
-                  type="button"
-                  class="cms-btn cms-btn--outline"
-                  :disabled="saving"
-                  @click="handleCancel"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  class="cms-btn cms-btn--secondary"
-                  :disabled="saving"
-                >
-                  <span v-if="saving" class="cms-btn__spinner"></span>
-                  Save Draft
-                </button>
-                <button
-                  v-if="currentStatus !== 'published'"
-                  type="button"
-                  class="cms-btn cms-btn--primary"
-                  :disabled="saving"
-                  @click="handlePublish"
-                >
-                  <UIcon name="i-heroicons-check" class="cms-btn__icon" />
-                  Publish
-                </button>
-              </div>
-            </div>
-          </template>
-        </CmsForm>
+        />
       </div>
 
       <!-- Delete confirmation modal -->
@@ -213,7 +218,6 @@ const statusOptions = [
 <style>
 /* Form Page */
 .form-page {
-  max-width: 896px;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -225,6 +229,24 @@ const statusOptions = [
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+:root.dark .form-page__header {
+  border-bottom-color: #374151;
+}
+
+.form-page__header-left {
+  flex: 1;
+  min-width: 200px;
+}
+
+.form-page__title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .form-page__title {
@@ -232,16 +254,18 @@ const statusOptions = [
   font-weight: 700;
   color: #111827;
   letter-spacing: -0.02em;
+  margin: 0;
 }
 
 :root.dark .form-page__title {
   color: white;
 }
 
-.form-page__status {
+.form-page__actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 /* Breadcrumb */
@@ -344,30 +368,6 @@ const statusOptions = [
   color: #9ca3af;
 }
 
-/* Form Actions */
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-  padding-top: 24px;
-  border-top: 1px solid #e5e7eb;
-}
-
-.form-actions--split {
-  justify-content: space-between;
-  align-items: center;
-}
-
-.form-actions__right {
-  display: flex;
-  gap: 12px;
-}
-
-:root.dark .form-actions {
-  border-top-color: #1f2937;
-}
-
 /* Modal */
 .modal-content {
   padding: 24px;
@@ -431,14 +431,15 @@ const statusOptions = [
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 10px 16px;
+  gap: 6px;
+  padding: 8px 14px;
   font-size: 14px;
   font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
   border: 1px solid transparent;
+  white-space: nowrap;
 }
 
 .cms-btn:disabled {
@@ -456,12 +457,17 @@ const statusOptions = [
 }
 
 .cms-btn__spinner {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border: 2px solid currentColor;
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 /* Primary Button (Blue) */
@@ -500,7 +506,7 @@ const statusOptions = [
 
 /* Outline Button */
 .cms-btn--outline {
-  background-color: transparent;
+  background-color: white;
   color: #374151;
   border-color: #d1d5db;
 }
@@ -511,6 +517,7 @@ const statusOptions = [
 }
 
 :root.dark .cms-btn--outline {
+  background-color: #1f2937;
   color: #d1d5db;
   border-color: #4b5563;
 }
@@ -532,22 +539,38 @@ const statusOptions = [
   border-color: #b91c1c;
 }
 
-/* Danger Ghost Button */
-.cms-btn--danger-ghost {
-  background-color: transparent;
+/* Danger Outline Button */
+.cms-btn--danger-outline {
+  background-color: white;
   color: #dc2626;
-  border-color: transparent;
+  border-color: #fca5a5;
 }
 
-.cms-btn--danger-ghost:hover:not(:disabled) {
+.cms-btn--danger-outline:hover:not(:disabled) {
   background-color: #fef2f2;
+  border-color: #f87171;
 }
 
-:root.dark .cms-btn--danger-ghost {
+:root.dark .cms-btn--danger-outline {
+  background-color: transparent;
   color: #f87171;
+  border-color: #7f1d1d;
 }
 
-:root.dark .cms-btn--danger-ghost:hover:not(:disabled) {
+:root.dark .cms-btn--danger-outline:hover:not(:disabled) {
   background-color: rgba(239, 68, 68, 0.1);
+  border-color: #b91c1c;
+}
+
+/* Warning Button (Orange) */
+.cms-btn--warning {
+  background-color: #f59e0b;
+  color: white;
+  border-color: #f59e0b;
+}
+
+.cms-btn--warning:hover:not(:disabled) {
+  background-color: #d97706;
+  border-color: #d97706;
 }
 </style>

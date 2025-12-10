@@ -33,19 +33,6 @@ const navigation = computed(() => [
   }
 ])
 
-const userMenuItems = [
-  [{
-    label: 'Settings',
-    icon: 'i-heroicons-cog-6-tooth',
-    disabled: true
-  }],
-  [{
-    label: 'Sign out',
-    icon: 'i-heroicons-arrow-right-on-rectangle',
-    click: () => logout()
-  }]
-]
-
 function isActive(path: string): boolean {
   if (path === config.public.cms.adminPath) {
     return route.path === path
@@ -101,17 +88,20 @@ watch(() => route.path, () => {
       </nav>
 
       <!-- User section -->
-      <div class="cms-user">
-        <UDropdownMenu v-if="user" :items="userMenuItems">
-          <button class="cms-user__button">
-            <UAvatar :alt="user.username" size="sm" class="cms-user__avatar" />
-            <div class="cms-user__info">
-              <span class="cms-user__name">{{ user.username }}</span>
-              <span class="cms-user__role">{{ user.role }}</span>
-            </div>
-            <UIcon name="i-heroicons-chevron-up-down" class="cms-user__chevron" />
-          </button>
-        </UDropdownMenu>
+      <div class="cms-user" v-if="user">
+        <div class="cms-user__profile">
+          <div class="cms-user__avatar-wrap">
+            {{ user.username?.charAt(0).toUpperCase() || 'U' }}
+          </div>
+          <div class="cms-user__info">
+            <span class="cms-user__name">{{ user.username }}</span>
+            <span class="cms-user__role">{{ user.role }}</span>
+          </div>
+        </div>
+        <button class="cms-user__logout" @click="logout" title="Sign out">
+          <UIcon name="i-heroicons-arrow-right-on-rectangle" class="cms-user__logout-icon" />
+          Sign out
+        </button>
       </div>
     </aside>
 
@@ -337,27 +327,29 @@ watch(() => route.path, () => {
   padding: 12px;
   border-top: 1px solid #e5e7eb !important;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-.cms-user__button {
-  width: 100%;
+.cms-user__profile {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  background: transparent !important;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.15s ease;
-  text-align: left;
+  padding: 8px 12px;
 }
 
-.cms-user__button:hover {
-  background-color: #f3f4f6 !important;
-}
-
-.cms-user__avatar {
+.cms-user__avatar-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
   flex-shrink: 0;
 }
 
@@ -385,11 +377,31 @@ watch(() => route.path, () => {
   text-overflow: ellipsis;
 }
 
-.cms-user__chevron {
+.cms-user__logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background-color: transparent !important;
+  border: 1px solid #e5e7eb !important;
+  color: #6b7280 !important;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.cms-user__logout:hover {
+  background-color: #fef2f2 !important;
+  border-color: #fca5a5 !important;
+  color: #dc2626 !important;
+}
+
+.cms-user__logout-icon {
   width: 16px;
   height: 16px;
-  color: #9ca3af !important;
-  flex-shrink: 0;
 }
 
 /* ============================================
