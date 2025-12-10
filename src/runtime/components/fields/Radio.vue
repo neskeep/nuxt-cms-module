@@ -36,17 +36,127 @@ const options = computed(() => props.field.options.map(opt => ({
 </script>
 
 <template>
-  <UFormField
-    :label="label"
-    :required="required"
-    :help="help"
-    :error="error"
-  >
-    <URadioGroup
-      v-model="value"
-      :options="options"
-      :disabled="disabled"
-      :class="{ 'flex gap-4': field.inline }"
-    />
-  </UFormField>
+  <div class="cms-field">
+    <label class="cms-field__label">
+      {{ label }}
+      <span v-if="required" class="cms-field__required">*</span>
+    </label>
+    <div
+      class="cms-field__radio-group"
+      :class="{ 'cms-field__radio-group--inline': field.inline }"
+    >
+      <label
+        v-for="option in options"
+        :key="String(option.value)"
+        class="cms-field__radio-item"
+        :class="{
+          'cms-field__radio-item--disabled': disabled || option.disabled,
+          'cms-field__radio-item--checked': value === option.value
+        }"
+      >
+        <input
+          type="radio"
+          :value="option.value"
+          :checked="value === option.value"
+          :disabled="disabled || option.disabled"
+          class="cms-field__radio-input"
+          @change="value = option.value"
+        />
+        <span class="cms-field__radio-circle">
+          <span class="cms-field__radio-dot"></span>
+        </span>
+        <span class="cms-field__radio-label">{{ option.label }}</span>
+      </label>
+    </div>
+    <p v-if="help && !error" class="cms-field__help">{{ help }}</p>
+    <p v-if="error" class="cms-field__error">{{ error }}</p>
+  </div>
 </template>
+
+<style>
+.cms-field__radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cms-field__radio-group--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.cms-field__radio-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  background-color: white;
+}
+
+.cms-field__radio-item:hover:not(.cms-field__radio-item--disabled) {
+  border-color: #2563eb;
+  background-color: #f8fafc;
+}
+
+.cms-field__radio-item--checked {
+  border-color: #2563eb;
+  background-color: #eff6ff;
+}
+
+.cms-field__radio-item--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: #f9fafb;
+}
+
+.cms-field__radio-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.cms-field__radio-circle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.cms-field__radio-item--checked .cms-field__radio-circle {
+  border-color: #2563eb;
+}
+
+.cms-field__radio-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #2563eb;
+  transform: scale(0);
+  transition: transform 0.15s ease;
+}
+
+.cms-field__radio-item--checked .cms-field__radio-dot {
+  transform: scale(1);
+}
+
+.cms-field__radio-label {
+  font-size: 14px;
+  color: #374151;
+  user-select: none;
+}
+
+.cms-field__radio-item--disabled .cms-field__radio-label {
+  color: #9ca3af;
+}
+</style>

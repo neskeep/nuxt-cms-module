@@ -58,32 +58,78 @@ const filteredOptions = computed(() => {
   if (!searchQuery.value) return selectOptions.value
 
   const query = searchQuery.value.toLowerCase()
-  return selectOptions.value.filter(opt =>
+  return selectOptions.value.filter((opt: any) =>
     opt.label.toLowerCase().includes(query)
   )
 })
 </script>
 
 <template>
-  <UFormField
-    :label="label"
-    :required="required"
-    :help="help"
-    :error="error"
-  >
-    <div v-if="pending" class="text-gray-500 text-sm">
-      Loading options...
+  <div class="cms-field">
+    <label class="cms-field__label">
+      {{ label }}
+      <span v-if="required" class="cms-field__required">*</span>
+    </label>
+
+    <!-- Loading state -->
+    <div v-if="pending" class="cms-field__relation-loading">
+      <svg class="cms-field__relation-spinner" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25"></circle>
+        <path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="3" stroke-linecap="round"></path>
+      </svg>
+      <span>Loading options...</span>
     </div>
 
-    <USelect
+    <!-- Select input -->
+    <select
       v-else
       v-model="value"
-      :options="filteredOptions"
-      :placeholder="`Select ${field.collection}`"
+      class="cms-field__select"
+      :class="{
+        'cms-field__select--error': error,
+        'cms-field__select--disabled': disabled,
+        'cms-field__select--placeholder': !value
+      }"
       :disabled="disabled"
       :multiple="isMultiple"
-      :searchable="true"
-      class="w-full"
-    />
-  </UFormField>
+    >
+      <option v-if="!isMultiple" value="" disabled>Select {{ field.collection }}</option>
+      <option
+        v-for="option in filteredOptions"
+        :key="option.value"
+        :value="option.value"
+      >
+        {{ option.label }}
+      </option>
+    </select>
+
+    <p v-if="help && !error" class="cms-field__help">{{ help }}</p>
+    <p v-if="error" class="cms-field__error">{{ error }}</p>
+  </div>
 </template>
+
+<style>
+.cms-field__relation-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: #6b7280;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background-color: #f9fafb;
+}
+
+.cms-field__relation-spinner {
+  width: 18px;
+  height: 18px;
+  animation: cms-spin 1s linear infinite;
+}
+
+@keyframes cms-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+</style>
