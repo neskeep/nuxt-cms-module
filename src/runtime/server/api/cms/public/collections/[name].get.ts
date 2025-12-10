@@ -1,6 +1,7 @@
 import { defineEventHandler, getRouterParam, getQuery } from '#imports'
 import { eq, and, desc, asc, like } from 'drizzle-orm'
 import { useCmsDatabase, contentSqlite, contentPostgres, translationsSqlite, translationsPostgres, getDatabaseType } from '../../../../database/client'
+import { sanitizeSearchQuery, sanitizeText } from '../../../../utils/validation'
 
 /**
  * Public API endpoint for fetching collection items
@@ -8,10 +9,12 @@ import { useCmsDatabase, contentSqlite, contentPostgres, translationsSqlite, tra
  * No authentication required
  */
 export default defineEventHandler(async (event) => {
-  const name = getRouterParam(event, 'name')
-  if (!name) {
+  const rawName = getRouterParam(event, 'name')
+  if (!rawName) {
     return { items: [], total: 0 }
   }
+  // Sanitize collection name to prevent injection
+  const name = sanitizeText(rawName)
 
   const query = getQuery(event)
   const page = parseInt(query.page as string) || 1
@@ -19,7 +22,9 @@ export default defineEventHandler(async (event) => {
   const offset = (page - 1) * limit
   const locale = query.locale as string | undefined
   const sort = query.sort as string || '-createdAt'
-  const search = query.search as string | undefined
+  // Sanitize search query to prevent abuse
+  const rawSearch = query.search as string | undefined
+  const search = rawSearch ? sanitizeSearchQuery(rawSearch) : undefined
   // For public API, default to published only
   const status = query.status as string || 'published'
 

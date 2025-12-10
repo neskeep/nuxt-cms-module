@@ -1,16 +1,19 @@
 import { defineEventHandler, getRouterParam, getQuery } from '#imports'
 import { eq, and } from 'drizzle-orm'
 import { useCmsDatabase, contentSqlite, contentPostgres, translationsSqlite, translationsPostgres, getDatabaseType } from '../../../../database/client'
+import { sanitizeText } from '../../../../utils/validation'
 
 /**
  * Public API endpoint for fetching singleton data
  * No authentication required
  */
 export default defineEventHandler(async (event) => {
-  const name = getRouterParam(event, 'name')
-  if (!name) {
+  const rawName = getRouterParam(event, 'name')
+  if (!rawName) {
     return { data: {} }
   }
+  // Sanitize singleton name to prevent injection
+  const name = sanitizeText(rawName)
 
   const query = getQuery(event)
   const locale = query.locale as string | undefined
