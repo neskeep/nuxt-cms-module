@@ -383,6 +383,68 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
       handler: resolver.resolve('./runtime/server/api/cms/media/file/[filename].get')
     })
 
+    // Users API
+    addServerHandler({
+      route: '/api/cms/users',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/users/index.get')
+    })
+
+    addServerHandler({
+      route: '/api/cms/users',
+      method: 'post',
+      handler: resolver.resolve('./runtime/server/api/cms/users/index.post')
+    })
+
+    addServerHandler({
+      route: '/api/cms/users/:id',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/users/[id].get')
+    })
+
+    addServerHandler({
+      route: '/api/cms/users/:id',
+      method: 'put',
+      handler: resolver.resolve('./runtime/server/api/cms/users/[id].put')
+    })
+
+    addServerHandler({
+      route: '/api/cms/users/:id',
+      method: 'delete',
+      handler: resolver.resolve('./runtime/server/api/cms/users/[id].delete')
+    })
+
+    // Roles API
+    addServerHandler({
+      route: '/api/cms/roles',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/roles/index.get')
+    })
+
+    addServerHandler({
+      route: '/api/cms/roles',
+      method: 'post',
+      handler: resolver.resolve('./runtime/server/api/cms/roles/index.post')
+    })
+
+    addServerHandler({
+      route: '/api/cms/roles/:id',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/roles/[id].get')
+    })
+
+    addServerHandler({
+      route: '/api/cms/roles/:id',
+      method: 'put',
+      handler: resolver.resolve('./runtime/server/api/cms/roles/[id].put')
+    })
+
+    addServerHandler({
+      route: '/api/cms/roles/:id',
+      method: 'delete',
+      handler: resolver.resolve('./runtime/server/api/cms/roles/[id].delete')
+    })
+
     // Public API (no authentication required)
     addServerHandler({
       route: '/api/cms/public/collections/:name',
@@ -462,6 +524,48 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
           name: 'cms-admin-media',
           path: `${adminPath}/media`,
           file: resolver.resolve('./runtime/pages/admin/media.vue')
+        })
+
+        // Users list
+        pages.push({
+          name: 'cms-admin-users',
+          path: `${adminPath}/users`,
+          file: resolver.resolve('./runtime/pages/admin/users/index.vue')
+        })
+
+        // New user
+        pages.push({
+          name: 'cms-admin-users-new',
+          path: `${adminPath}/users/new`,
+          file: resolver.resolve('./runtime/pages/admin/users/new.vue')
+        })
+
+        // Edit user
+        pages.push({
+          name: 'cms-admin-users-edit',
+          path: `${adminPath}/users/:id`,
+          file: resolver.resolve('./runtime/pages/admin/users/[id].vue')
+        })
+
+        // Roles list
+        pages.push({
+          name: 'cms-admin-roles',
+          path: `${adminPath}/roles`,
+          file: resolver.resolve('./runtime/pages/admin/roles/index.vue')
+        })
+
+        // New role
+        pages.push({
+          name: 'cms-admin-roles-new',
+          path: `${adminPath}/roles/new`,
+          file: resolver.resolve('./runtime/pages/admin/roles/new.vue')
+        })
+
+        // Edit role
+        pages.push({
+          name: 'cms-admin-roles-edit',
+          path: `${adminPath}/roles/:id`,
+          file: resolver.resolve('./runtime/pages/admin/roles/[id].vue')
         })
       })
 

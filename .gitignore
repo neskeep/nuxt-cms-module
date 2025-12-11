@@ -23,4 +23,10 @@ logs
 .env.*
 !.env.example
 
+# Playground
+playground/.nuxt
+playground/.output
+playground/.cms
+playground/node_modules
+
 .playwright-mcp

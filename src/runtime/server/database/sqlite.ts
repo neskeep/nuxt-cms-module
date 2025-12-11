@@ -31,7 +31,8 @@ export function initSqliteDatabase(filename: string) {
       content: schema.contentSqlite,
       translations: schema.translationsSqlite,
       media: schema.mediaSqlite,
-      users: schema.usersSqlite
+      users: schema.usersSqlite,
+      roles: schema.rolesSqlite
     }
   })
 
@@ -130,6 +131,25 @@ function createTables(sqlite: Database.Database) {
     )
   `)
 
+  // Create cms_roles table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS cms_roles (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL UNIQUE,
+      display_name TEXT NOT NULL,
+      description TEXT,
+      permissions TEXT NOT NULL DEFAULT '{}',
+      is_system INTEGER NOT NULL DEFAULT 0,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL
+    )
+  `)
+
+  // Create index on role name
+  sqlite.exec(`
+    CREATE INDEX IF NOT EXISTS idx_roles_name ON cms_roles(name)
+  `)
+
   // Create cms_users table
   sqlite.exec(`
     CREATE TABLE IF NOT EXISTS cms_users (
@@ -138,17 +158,39 @@ function createTables(sqlite: Database.Database) {
       password_hash TEXT NOT NULL,
       email TEXT,
       name TEXT,
-      role TEXT NOT NULL DEFAULT 'editor' CHECK(role IN ('admin', 'editor')),
+      avatar TEXT,
+      role TEXT DEFAULT 'editor',
+      role_id TEXT,
       active INTEGER NOT NULL DEFAULT 1,
       last_login INTEGER,
       created_at INTEGER NOT NULL,
-      updated_at INTEGER NOT NULL
+      updated_at INTEGER NOT NULL,
+      FOREIGN KEY (role_id) REFERENCES cms_roles(id) ON DELETE SET NULL
     )
   `)
 
   // Create index on username
   sqlite.exec(`
     CREATE INDEX IF NOT EXISTS idx_users_username ON cms_users(username)
+  `)
+
+  // Add role_id column if it doesn't exist (migration for existing databases)
+  try {
+    sqlite.exec(`ALTER TABLE cms_users ADD COLUMN role_id TEXT`)
+  } catch {
+    // Column already exists, ignore
+  }
+
+  // Add avatar column if it doesn't exist (migration for existing databases)
+  try {
+    sqlite.exec(`ALTER TABLE cms_users ADD COLUMN avatar TEXT`)
+  } catch {
+    // Column already exists, ignore
+  }
+
+  // Create index on role_id (must be after column exists)
+  sqlite.exec(`
+    CREATE INDEX IF NOT EXISTS idx_users_role_id ON cms_users(role_id)
   `)
 }
 

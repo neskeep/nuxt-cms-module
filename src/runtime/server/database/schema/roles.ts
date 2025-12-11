@@ -1,5 +1,5 @@
 import { sqliteTable, text, integer } from 'drizzle-orm/sqlite-core'
-import { pgTable, varchar, timestamp, boolean, json } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, timestamp, boolean, jsonb, text as pgText } from 'drizzle-orm/pg-core'
 
 /**
  * SQLite schema for CMS roles
@@ -22,8 +22,8 @@ export const rolesPostgres = pgTable('cms_roles', {
   id: varchar('id', { length: 21 }).primaryKey(),
   name: varchar('name', { length: 50 }).notNull().unique(),
   displayName: varchar('display_name', { length: 100 }).notNull(),
-  description: text('description'),
-  permissions: json('permissions').$type<RolePermissions>().notNull(),
+  description: pgText('description'),
+  permissions: jsonb('permissions').$type<RolePermissions>().notNull(),
   isSystem: boolean('is_system').default(false).notNull(),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow()

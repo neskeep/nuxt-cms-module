@@ -24,7 +24,8 @@ export async function initPostgresDatabase(connectionUrl: string) {
       content: schema.contentPostgres,
       translations: schema.translationsPostgres,
       media: schema.mediaPostgres,
-      users: schema.usersPostgres
+      users: schema.usersPostgres,
+      roles: schema.rolesPostgres
     }
   })
 
@@ -116,6 +117,25 @@ async function createTables(client: ReturnType<typeof postgres>) {
     )
   `
 
+  // Create cms_roles table
+  await client`
+    CREATE TABLE IF NOT EXISTS cms_roles (
+      id VARCHAR(21) PRIMARY KEY,
+      name VARCHAR(50) NOT NULL UNIQUE,
+      display_name VARCHAR(100) NOT NULL,
+      description TEXT,
+      permissions JSONB NOT NULL DEFAULT '{}',
+      is_system BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `
+
+  // Create index on role name
+  await client`
+    CREATE INDEX IF NOT EXISTS idx_roles_name ON cms_roles(name)
+  `
+
   // Create cms_users table
   await client`
     CREATE TABLE IF NOT EXISTS cms_users (
@@ -124,7 +144,9 @@ async function createTables(client: ReturnType<typeof postgres>) {
       password_hash VARCHAR(255) NOT NULL,
       email VARCHAR(255),
       name VARCHAR(255),
-      role VARCHAR(20) NOT NULL DEFAULT 'editor' CHECK(role IN ('admin', 'editor')),
+      avatar VARCHAR(500),
+      role VARCHAR(20) DEFAULT 'editor',
+      role_id VARCHAR(21) REFERENCES cms_roles(id) ON DELETE SET NULL,
       active BOOLEAN NOT NULL DEFAULT TRUE,
       last_login TIMESTAMP,
       created_at TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -136,6 +158,25 @@ async function createTables(client: ReturnType<typeof postgres>) {
   await client`
     CREATE INDEX IF NOT EXISTS idx_users_username ON cms_users(username)
   `
+
+  // Create index on role_id
+  await client`
+    CREATE INDEX IF NOT EXISTS idx_users_role_id ON cms_users(role_id)
+  `
+
+  // Add role_id column if it doesn't exist (migration for existing databases)
+  try {
+    await client`ALTER TABLE cms_users ADD COLUMN IF NOT EXISTS role_id VARCHAR(21) REFERENCES cms_roles(id) ON DELETE SET NULL`
+  } catch {
+    // Column might already exist
+  }
+
+  // Add avatar column if it doesn't exist (migration for existing databases)
+  try {
+    await client`ALTER TABLE cms_users ADD COLUMN IF NOT EXISTS avatar VARCHAR(500)`
+  } catch {
+    // Column might already exist
+  }
 }
 
 export type PostgresDatabase = ReturnType<typeof drizzle>
