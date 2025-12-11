@@ -9,6 +9,7 @@ export { default as CmsFieldSelect } from './Select.vue'
 export { default as CmsFieldRadio } from './Radio.vue'
 export { default as CmsFieldCheckbox } from './Checkbox.vue'
 export { default as CmsFieldBoolean } from './Boolean.vue'
+export { default as CmsFieldTags } from './Tags.vue'
 export { default as CmsFieldRichtext } from './Richtext.vue'
 export { default as CmsFieldMarkdown } from './Markdown.vue'
 export { default as CmsFieldCode } from './Code.vue'
@@ -40,6 +41,7 @@ export const fieldComponentMap: Record<string, string> = {
   radio: 'CmsFieldRadio',
   checkbox: 'CmsFieldCheckbox',
   boolean: 'CmsFieldBoolean',
+  tags: 'CmsFieldTags',
   richtext: 'CmsFieldRichtext',
   markdown: 'CmsFieldMarkdown',
   code: 'CmsFieldCode',

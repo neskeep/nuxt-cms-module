@@ -14,6 +14,7 @@ export type FieldType =
   | 'radio'
   | 'checkbox'
   | 'boolean'
+  | 'tags'
   // Content
   | 'richtext'
   | 'markdown'
@@ -134,6 +135,16 @@ export interface BooleanFieldDefinition extends BaseFieldDefinition {
   type: 'boolean'
   labelOn?: string
   labelOff?: string
+}
+
+export interface TagsFieldDefinition extends BaseFieldDefinition {
+  type: 'tags'
+  maxTags?: number
+  minTags?: number
+  allowDuplicates?: boolean
+  suggestions?: string[]
+  delimiter?: string
+  validateTag?: (tag: string) => boolean | string
 }
 
 // ============ Content Fields ============
@@ -282,6 +293,7 @@ export type FieldDefinition =
   | RadioFieldDefinition
   | CheckboxFieldDefinition
   | BooleanFieldDefinition
+  | TagsFieldDefinition
   | RichtextFieldDefinition
   | MarkdownFieldDefinition
   | CodeFieldDefinition

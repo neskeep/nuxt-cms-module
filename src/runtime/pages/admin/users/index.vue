@@ -242,7 +242,8 @@ const formatDate = (date: string) => {
 }
 
 .search-input__field:focus {
-  border-color: #2563eb;
+  border-color: var(--cms-primary, #2563eb);
+  box-shadow: 0 0 0 3px var(--cms-primary-light, rgba(37, 99, 235, 0.1));
 }
 
 /* Table */
@@ -423,12 +424,12 @@ const formatDate = (date: string) => {
 }
 
 .btn--primary {
-  background: #2563eb;
+  background: var(--cms-primary, #2563eb);
   color: white;
 }
 
 .btn--primary:hover {
-  background: #1d4ed8;
+  background: var(--cms-primary-hover, #1d4ed8);
 }
 
 .btn__icon {

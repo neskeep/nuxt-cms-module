@@ -201,7 +201,7 @@ const formatDate = (date: string) => {
 }
 
 .role-card--system {
-  border-left: 3px solid #2563eb;
+  border-left: 3px solid var(--cms-primary, #2563eb);
 }
 
 .role-card__header {
@@ -269,8 +269,8 @@ const formatDate = (date: string) => {
 
 .role-card__badge {
   padding: 4px 8px;
-  background: #eff6ff;
-  color: #2563eb;
+  background: var(--cms-primary-light, #eff6ff);
+  color: var(--cms-primary, #2563eb);
   font-size: 11px;
   font-weight: 600;
   border-radius: 9999px;
@@ -357,12 +357,12 @@ const formatDate = (date: string) => {
 }
 
 .btn--primary {
-  background: #2563eb;
+  background: var(--cms-primary, #2563eb);
   color: white;
 }
 
 .btn--primary:hover {
-  background: #1d4ed8;
+  background: var(--cms-primary-hover, #1d4ed8);
 }
 
 .btn__icon {

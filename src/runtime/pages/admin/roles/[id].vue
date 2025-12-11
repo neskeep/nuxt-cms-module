@@ -317,8 +317,8 @@ const submit = async () => {
 
 .system-badge {
   padding: 4px 10px;
-  background: #eff6ff;
-  color: #2563eb;
+  background: var(--cms-primary-light, #eff6ff);
+  color: var(--cms-primary, #2563eb);
   font-size: 12px;
   font-weight: 600;
   border-radius: 9999px;
@@ -406,7 +406,8 @@ const submit = async () => {
 }
 
 .form-field__input:focus {
-  border-color: #2563eb;
+  border-color: var(--cms-primary, #2563eb);
+  box-shadow: 0 0 0 3px var(--cms-primary-light, rgba(37, 99, 235, 0.1));
 }
 
 .form-field__input:disabled {
@@ -503,8 +504,8 @@ const submit = async () => {
 }
 
 .checkbox input:checked + .checkbox__mark {
-  background: #2563eb;
-  border-color: #2563eb;
+  background: var(--cms-primary, #2563eb);
+  border-color: var(--cms-primary, #2563eb);
 }
 
 .checkbox input:checked + .checkbox__mark::after {
@@ -549,12 +550,12 @@ const submit = async () => {
 }
 
 .btn--primary {
-  background: #2563eb;
+  background: var(--cms-primary, #2563eb);
   color: white;
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: var(--cms-primary-hover, #1d4ed8);
 }
 
 .btn--primary:disabled {

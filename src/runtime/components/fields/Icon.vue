@@ -647,14 +647,15 @@ const variantLabels: Record<string, string> = {
 }
 
 .cms-icon-picker__icon:hover {
-  background: #f3f4f6;
-  border-color: #d1d5db;
+  background: var(--cms-primary, #2563eb);
+  border-color: var(--cms-primary, #2563eb);
+  color: white;
 }
 
 .cms-icon-picker__icon--selected {
-  background: #eff6ff;
-  border-color: #2563eb;
-  color: #2563eb;
+  background: var(--cms-primary, #2563eb);
+  border-color: var(--cms-primary, #2563eb);
+  color: white;
 }
 
 .cms-icon-picker__empty {
