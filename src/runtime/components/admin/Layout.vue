@@ -64,6 +64,11 @@ const navigation = computed(() => [
     label: 'Roles',
     icon: 'i-heroicons-shield-check',
     to: `${config.public.cms.adminPath}/roles`
+  },
+  {
+    label: 'Settings',
+    icon: 'i-heroicons-cog-6-tooth',
+    to: `${config.public.cms.adminPath}/settings/branding`
   }
 ])
 
