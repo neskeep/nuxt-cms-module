@@ -160,8 +160,8 @@ const collections = computed(() => {
 }
 
 .item-card:hover .item-card__icon {
-  background-color: var(--cms-primary-light, #eff6ff);
-  color: var(--cms-primary, #2563eb);
+  background-color: var(--cms-primary, #2563eb);
+  color: white;
 }
 
 .item-card__content {
