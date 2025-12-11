@@ -104,13 +104,17 @@ const emit = defineEmits<{
 // State
 const isOpen = ref(false)
 const searchQuery = ref('')
-const selectedVariant = ref<'outline' | 'solid' | 'mini' | 'micro'>(
-  props.field.defaultVariant || 'outline'
+const selectedVariant = ref<'outline' | 'solid'>(
+  (props.field.defaultVariant as 'outline' | 'solid') || 'outline'
 )
 
-// Available variants based on field config
+// Available variants - only outline and solid are supported
 const availableVariants = computed(() => {
-  return props.field.variants || ['outline', 'solid', 'mini', 'micro']
+  const allowed = ['outline', 'solid'] as const
+  if (props.field.variants?.length) {
+    return props.field.variants.filter(v => allowed.includes(v as any)) as ('outline' | 'solid')[]
+  }
+  return [...allowed]
 })
 
 // Computed
@@ -123,15 +127,18 @@ const clearable = computed(() => props.field.clearable !== false)
 const parsedValue = computed(() => {
   if (!props.modelValue) return null
 
-  // Format: heroicons:icon-name or heroicons-outline:icon-name
-  const match = props.modelValue.match(/^(?:heroicons|i-heroicons)(?:-(\w+))?[:/](.+)$/)
-  if (match) {
-    return {
-      variant: (match[1] || 'outline') as 'outline' | 'solid' | 'mini' | 'micro',
-      name: match[2]
-    }
+  // Format: heroicons:icon-name or heroicons:icon-name-20-solid
+  const value = props.modelValue
+
+  // Check if it's solid variant (ends with -20-solid)
+  if (value.includes('-20-solid')) {
+    const name = value.replace(/^heroicons:/, '').replace(/-20-solid$/, '')
+    return { variant: 'solid' as const, name }
   }
-  return null
+
+  // Otherwise it's outline
+  const name = value.replace(/^heroicons:/, '')
+  return { variant: 'outline' as const, name }
 })
 
 // Current icon name for display
@@ -139,18 +146,20 @@ const currentIconName = computed(() => parsedValue.value?.name || null)
 
 // Get Nuxt UI icon format
 const getIconClass = (iconName: string, variant: string) => {
-  if (variant === 'outline') {
-    return `i-heroicons-${iconName}`
+  if (variant === 'solid') {
+    return `i-heroicons-${iconName}-20-solid`
   }
-  return `i-heroicons-${iconName}-${variant === 'solid' ? '20-solid' : variant}`
+  // Default to outline
+  return `i-heroicons-${iconName}`
 }
 
 // Full icon value for storage (Iconify format for compatibility)
 const getIconValue = (iconName: string, variant: string) => {
-  if (variant === 'outline') {
-    return `heroicons:${iconName}`
+  if (variant === 'solid') {
+    return `heroicons:${iconName}-20-solid`
   }
-  return `heroicons:${iconName}-${variant === 'solid' ? '20-solid' : variant}`
+  // Default to outline
+  return `heroicons:${iconName}`
 }
 
 // Filter icons based on search and categories
@@ -218,7 +227,7 @@ function toggleDropdown() {
 }
 
 // Update variant and re-emit value
-function changeVariant(variant: 'outline' | 'solid' | 'mini' | 'micro') {
+function changeVariant(variant: 'outline' | 'solid') {
   selectedVariant.value = variant
   if (currentIconName.value) {
     const value = getIconValue(currentIconName.value, variant)
@@ -256,10 +265,8 @@ function formatIconName(name: string): string {
 
 // Variant labels
 const variantLabels: Record<string, string> = {
-  outline: 'Outline',
-  solid: 'Solid',
-  mini: 'Mini (20px)',
-  micro: 'Micro (16px)'
+  outline: 'Outline (24px)',
+  solid: 'Solid (20px)'
 }
 </script>
 

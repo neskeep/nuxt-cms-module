@@ -258,10 +258,10 @@ export interface SlugFieldDefinition extends BaseFieldDefinition {
 
 export interface IconFieldDefinition extends BaseFieldDefinition {
   type: 'icon'
-  /** Icon style variants to show */
-  variants?: ('outline' | 'solid' | 'mini' | 'micro')[]
+  /** Icon style variants to show (only outline and solid supported) */
+  variants?: ('outline' | 'solid')[]
   /** Default variant when none selected */
-  defaultVariant?: 'outline' | 'solid' | 'mini' | 'micro'
+  defaultVariant?: 'outline' | 'solid'
   /** Icon categories to filter (e.g., 'arrows', 'media', 'social') */
   categories?: string[]
   /** Allow clearing selection */
