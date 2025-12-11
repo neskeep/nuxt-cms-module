@@ -3,7 +3,7 @@ import { SignJWT, jwtVerify } from 'jose'
 import bcrypt from 'bcryptjs'
 import { nanoid } from 'nanoid'
 import { eq } from 'drizzle-orm'
-import { useCmsDatabase, usersSqlite, usersPostgres, getDatabaseType } from '../database/client'
+import { useCmsDatabase, usersSqlite, usersPostgres, rolesSqlite, rolesPostgres, getDatabaseType } from '../database/client'
 import type { SafeCmsUser, JwtPayload, UserRole } from '../../types'
 
 const BCRYPT_ROUNDS = 12
@@ -153,6 +153,16 @@ export async function getUserFromEvent(event: any): Promise<SafeCmsUser | null> 
   const user = users[0]
   if (!user.active) return null
 
+  // Get role display name if roleId exists
+  let roleDisplayName: string | undefined
+  if (user.roleId) {
+    const rolesTable = getDatabaseType() === 'postgresql' ? rolesPostgres : rolesSqlite
+    const roles = await db.select().from(rolesTable).where(eq(rolesTable.id, user.roleId)).limit(1)
+    if (roles.length > 0) {
+      roleDisplayName = roles[0].displayName
+    }
+  }
+
   return {
     id: user.id,
     username: user.username,
@@ -161,6 +171,7 @@ export async function getUserFromEvent(event: any): Promise<SafeCmsUser | null> 
     avatar: user.avatar || null,
     role: user.role as UserRole | null,
     roleId: user.roleId || null,
+    roleName: roleDisplayName,
     active: user.active,
     lastLogin: user.lastLogin,
     createdAt: user.createdAt

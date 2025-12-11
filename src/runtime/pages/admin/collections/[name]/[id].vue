@@ -139,19 +139,6 @@ function handleCancel() {
               <span class="cms-actions__tooltip">Cancel</span>
             </button>
 
-            <!-- Save Draft Button -->
-            <button
-              type="button"
-              class="cms-actions__btn cms-actions__btn--secondary"
-              :disabled="saving"
-              @click="handleSubmit"
-              title="Save as draft"
-            >
-              <span v-if="saving" class="cms-actions__spinner"></span>
-              <UIcon v-else name="i-heroicons-document" class="cms-actions__icon" />
-              <span class="cms-actions__tooltip">Save Draft</span>
-            </button>
-
             <!-- Publish / Unpublish Button -->
             <button
               v-if="currentStatus !== 'published'"

@@ -135,8 +135,8 @@ watch(() => route.path, () => {
             {{ user.username?.charAt(0).toUpperCase() || 'U' }}
           </div>
           <div class="cms-user__info">
-            <span class="cms-user__name">{{ user.username }}</span>
-            <span class="cms-user__role">{{ user.roleName || user.role }}</span>
+            <span class="cms-user__name">@{{ user.username }}</span>
+            <span class="cms-user__role">{{ user.roleName || user.role || 'User' }}</span>
           </div>
         </div>
         <button class="cms-user__logout" @click="logout" title="Sign out">

@@ -19,8 +19,8 @@ const DEFAULT_CMS_CONFIG = `
       enabled: true,
       path: '/admin',
       credentials: {
-        username: 'admin',
-        password: 'admin123'
+        username: 'superadmin',
+        password: 'superadmin123'
       }
     }
   }`
@@ -181,7 +181,7 @@ function main() {
   console.log('  3. Run your Nuxt app: pnpm dev')
   console.log('  4. Go to /admin to access the CMS panel')
   console.log('')
-  console.log('  Default credentials: admin / admin123')
+  console.log('  Default credentials: superadmin / superadmin123')
   console.log('')
   console.log('  Docs: https://github.com/IsraSenior/nuxt-cms-module')
   console.log('')
