@@ -9,6 +9,7 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/neskeep/nuxt-cms-module/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/neskeep/nuxt-cms-module/ci.yml?style=flat-square&logo=github&label=CI" alt="CI Status"></a>
   <a href="https://www.npmjs.com/package/@neskeep/nuxt-cms"><img src="https://img.shields.io/npm/v/@neskeep/nuxt-cms.svg?style=flat-square&color=2563eb" alt="npm version"></a>
   <a href="https://www.npmjs.com/package/@neskeep/nuxt-cms"><img src="https://img.shields.io/npm/dm/@neskeep/nuxt-cms.svg?style=flat-square&color=10b981" alt="npm downloads"></a>
   <a href="https://github.com/neskeep/nuxt-cms-module/blob/main/LICENSE"><img src="https://img.shields.io/npm/l/@neskeep/nuxt-cms.svg?style=flat-square&color=6366f1" alt="license"></a>
