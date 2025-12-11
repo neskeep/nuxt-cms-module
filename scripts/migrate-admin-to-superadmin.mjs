@@ -20,16 +20,21 @@ const __dirname = dirname(__filename)
 // Get username from command line args
 const targetUsername = process.argv[2]
 
-// Try to find the SQLite database
-const possiblePaths = [
-  join(process.cwd(), '.cms', 'cms.db'),
-  join(process.cwd(), '.nuxt', '.cms', 'cms.db'),
-  join(process.cwd(), 'server', '.cms', 'cms.db'),
-  join(process.cwd(), '.output', '.cms', 'cms.db'),
-  join(process.cwd(), 'cms.db'),
-  join(__dirname, '..', '.cms', 'cms.db'),
-  join(__dirname, '..', 'playground', '.cms', 'cms.db')
+// Try to find the SQLite database (try both cms.db and data.db)
+const dbNames = ['cms.db', 'data.db']
+const basePaths = [
+  join(process.cwd(), '.cms'),
+  join(process.cwd(), '.nuxt', '.cms'),
+  join(process.cwd(), 'server', '.cms'),
+  join(process.cwd(), '.output', '.cms'),
+  process.cwd(),
+  join(__dirname, '..', '.cms'),
+  join(__dirname, '..', 'playground', '.cms')
 ]
+
+const possiblePaths = basePaths.flatMap(base =>
+  dbNames.map(name => join(base, name))
+)
 
 let dbPath = possiblePaths.find(path => existsSync(path))
 
