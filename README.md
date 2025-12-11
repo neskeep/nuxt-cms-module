@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/neskeep/nuxt-cms-module/main/.github/logo.svg" alt="Nuxt CMS" width="200" />
+  <img src="./assets/logo.webp" alt="Neskeep CMS" width="280" />
 </p>
 
 <h1 align="center">@neskeep/nuxt-cms</h1>
@@ -36,7 +36,7 @@ npm install @neskeep/nuxt-cms
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/neskeep/nuxt-cms-module/main/.github/screenshot.png" alt="Admin Panel Screenshot" width="800" />
+  <img src="./assets/admin-panel-screenshot.webp" alt="Admin Panel Screenshot" width="800" style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);" />
 </p>
 
 ---
