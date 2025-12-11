@@ -69,49 +69,28 @@ function adjustColor(hex: string, percent: number): string {
 
 <template>
   <div class="login" :style="primaryColorStyle">
-    <!-- Branding Panel -->
-    <div class="login__branding" :style="brandingPanelStyle">
-      <div class="login__branding-content">
-        <!-- Custom Logo or Icon -->
-        <div v-if="branding.logo" class="login__branding-logo">
-          <img :src="branding.logo" :alt="branding.name || 'CMS'" class="login__branding-logo-img" />
-        </div>
-        <div v-else class="login__branding-icon">
-          <UIcon name="i-heroicons-cube" class="w-12 h-12 text-white" />
-        </div>
-
-        <h1 class="login__branding-title">
-          {{ branding.login?.title || 'Content Management System' }}
-        </h1>
-        <p class="login__branding-text">
-          {{ branding.login?.description || 'Manage your content with a powerful and intuitive interface.' }}
-        </p>
-      </div>
-    </div>
-
-    <!-- Form Panel -->
+    <!-- Form Panel (Full Width) -->
     <div class="login__form-panel">
       <div class="login__form-container">
-        <!-- Centered Logo (Mobile and Desktop) -->
-        <div class="login__centered-logo">
+        <!-- Left-Aligned Logo -->
+        <div class="login__logo">
           <template v-if="branding.logo">
-            <img :src="branding.logo" :alt="branding.name || 'CMS'" class="login__centered-logo-img" />
+            <img :src="branding.logo" :alt="branding.name || 'CMS'" class="login__logo-img" />
           </template>
           <template v-else>
-            <div class="login__centered-icon">
+            <div class="login__logo-icon">
               <UIcon name="i-heroicons-cube" class="w-8 h-8 text-white" />
             </div>
           </template>
         </div>
 
-        <!-- Form Header (title and description are now optional) -->
-        <div v-if="branding.login?.title || branding.login?.description" class="login__header">
+        <!-- Form Header -->
+        <div class="login__header">
           <h2 v-if="branding.login?.title" class="login__title">{{ branding.login.title }}</h2>
+          <h2 v-else class="login__title">Welcome back</h2>
+
           <p v-if="branding.login?.description" class="login__subtitle">{{ branding.login.description }}</p>
-        </div>
-        <div v-else class="login__header">
-          <h2 class="login__title">Welcome back</h2>
-          <p class="login__subtitle">Sign in to your account to continue</p>
+          <p v-else class="login__subtitle">Sign in to your account to continue</p>
         </div>
 
         <!-- Error Alert -->
@@ -186,157 +165,56 @@ function adjustColor(hex: string, percent: number): string {
 
 <style scoped>
 /* ============================================
-   Login Page - Modern Minimal Design
+   Login Page - Simplified Single Panel Design
    Scoped styles to avoid conflicts with host app
    ============================================ */
 
 .login {
   min-height: 100vh;
   display: flex;
-  background-color: #f9fafb !important;
-}
-
-/* ============================================
-   Branding Panel
-   ============================================ */
-.login__branding {
-  display: none;
-  width: 45%;
-  background: linear-gradient(135deg, var(--cms-primary, #2563eb) 0%, var(--cms-primary-hover, #1d4ed8) 50%, var(--cms-primary-dark, #1e40af) 100%);
-  padding: 48px;
-  position: relative;
-  overflow: hidden;
-}
-
-.login__branding-logo {
-  margin: 0 auto 32px;
-}
-
-.login__branding-logo-img {
-  max-width: 180px;
-  max-height: 80px;
-  object-fit: contain;
-}
-
-.login__branding::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-}
-
-.login__branding::after {
-  content: '';
-  position: absolute;
-  bottom: -30%;
-  left: -30%;
-  width: 80%;
-  height: 80%;
-  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 60%);
-}
-
-@media (min-width: 1024px) {
-  .login__branding {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.login__branding-content {
-  position: relative;
-  z-index: 1;
-  max-width: 420px;
-  text-align: center;
-}
-
-.login__branding-icon {
-  width: 80px;
-  height: 80px;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 20px;
-  display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto 32px;
-  backdrop-filter: blur(10px);
-}
-
-.login__branding-title {
-  font-size: 32px;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 16px;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
-}
-
-.login__branding-text {
-  font-size: 16px;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+  background-color: #f9fafb !important;
+  padding: 24px;
 }
 
 /* ============================================
    Form Panel
    ============================================ */
 .login__form-panel {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-@media (min-width: 640px) {
-  .login__form-panel {
-    padding: 48px;
-  }
+  width: 100%;
+  max-width: 440px;
 }
 
 .login__form-container {
   width: 100%;
-  max-width: 400px;
 }
 
-/* Centered Logo (visible on all devices) */
-.login__centered-logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Left-Aligned Logo */
+.login__logo {
   margin-bottom: 40px;
 }
 
-.login__centered-icon {
-  width: 64px;
-  height: 64px;
+.login__logo-icon {
+  width: 56px;
+  height: 56px;
   background: linear-gradient(135deg, var(--cms-primary, #2563eb) 0%, var(--cms-primary-hover, #1d4ed8) 100%);
-  border-radius: 16px;
-  display: flex;
+  border-radius: 12px;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
 }
 
-.login__centered-logo-img {
-  max-width: 200px;
-  max-height: 64px;
+.login__logo-img {
+  max-width: 180px;
+  max-height: 56px;
   object-fit: contain;
 }
 
 /* Header */
 .login__header {
   margin-bottom: 32px;
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .login__header {
-    text-align: left;
-  }
 }
 
 .login__title {
