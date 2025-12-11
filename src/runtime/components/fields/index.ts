@@ -24,6 +24,7 @@ export { default as CmsFieldRepeater } from './Repeater.vue'
 export { default as CmsFieldGroup } from './Group.vue'
 export { default as CmsFieldColor } from './Color.vue'
 export { default as CmsFieldSlug } from './Slug.vue'
+export { default as CmsFieldIcon } from './Icon.vue'
 
 /**
  * Map field type to component name
@@ -53,7 +54,8 @@ export const fieldComponentMap: Record<string, string> = {
   repeater: 'CmsFieldRepeater',
   group: 'CmsFieldGroup',
   color: 'CmsFieldColor',
-  slug: 'CmsFieldSlug'
+  slug: 'CmsFieldSlug',
+  icon: 'CmsFieldIcon'
 }
 
 /**

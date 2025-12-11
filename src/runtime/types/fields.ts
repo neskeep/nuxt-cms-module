@@ -35,6 +35,7 @@ export type FieldType =
   // Special
   | 'color'
   | 'slug'
+  | 'icon'
 
 /**
  * Condition for showing/hiding fields
@@ -255,6 +256,18 @@ export interface SlugFieldDefinition extends BaseFieldDefinition {
   separator?: '-' | '_'
 }
 
+export interface IconFieldDefinition extends BaseFieldDefinition {
+  type: 'icon'
+  /** Icon style variants to show */
+  variants?: ('outline' | 'solid' | 'mini' | 'micro')[]
+  /** Default variant when none selected */
+  defaultVariant?: 'outline' | 'solid' | 'mini' | 'micro'
+  /** Icon categories to filter (e.g., 'arrows', 'media', 'social') */
+  categories?: string[]
+  /** Allow clearing selection */
+  clearable?: boolean
+}
+
 /**
  * Union type of all field definitions
  */
@@ -284,6 +297,7 @@ export type FieldDefinition =
   | GroupFieldDefinition
   | ColorFieldDefinition
   | SlugFieldDefinition
+  | IconFieldDefinition
 
 /**
  * Map of field names to their definitions
