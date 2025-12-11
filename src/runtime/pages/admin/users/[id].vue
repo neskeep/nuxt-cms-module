@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { definePageMeta, useRuntimeConfig, useFetch, useRoute, navigateTo } from '#imports'
 import { useCmsAdmin } from '../../../composables/useCmsAdmin'
 import CmsFieldSelect from '../../../components/fields/Select.vue'
+import CmsFieldImage from '../../../components/fields/Image.vue'
 
 definePageMeta({
   layout: false,
@@ -223,15 +224,18 @@ const submit = async () => {
             </p>
           </div>
 
-          <!-- Avatar URL -->
-          <div class="form-field">
-            <label for="avatar" class="form-field__label">Avatar URL</label>
-            <input
-              id="avatar"
+          <!-- Avatar -->
+          <div class="form-field form-field--full-width">
+            <CmsFieldImage
               v-model="form.avatar"
-              type="url"
-              class="form-field__input"
-              placeholder="https://example.com/avatar.jpg"
+              :field="{
+                type: 'image',
+                label: 'Avatar',
+                help: 'Upload an avatar image for this user',
+                accept: ['image/png', 'image/jpeg', 'image/jpg', 'image/webp'],
+                maxSize: 5 * 1024 * 1024
+              }"
+              field-name="avatar"
             />
           </div>
         </div>
@@ -320,6 +324,10 @@ const submit = async () => {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.form-field--full-width {
+  grid-column: 1 / -1;
 }
 
 .form-field__label {

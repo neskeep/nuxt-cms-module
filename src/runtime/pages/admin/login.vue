@@ -92,21 +92,24 @@ function adjustColor(hex: string, percent: number): string {
     <!-- Form Panel -->
     <div class="login__form-panel">
       <div class="login__form-container">
-        <!-- Mobile Logo -->
-        <div class="login__mobile-logo">
+        <!-- Centered Logo (Mobile and Desktop) -->
+        <div class="login__centered-logo">
           <template v-if="branding.logo">
-            <img :src="branding.logo" :alt="branding.name || 'CMS'" class="login__mobile-logo-img" />
+            <img :src="branding.logo" :alt="branding.name || 'CMS'" class="login__centered-logo-img" />
           </template>
           <template v-else>
-            <div class="login__mobile-icon">
-              <UIcon name="i-heroicons-cube" class="w-6 h-6 text-white" />
+            <div class="login__centered-icon">
+              <UIcon name="i-heroicons-cube" class="w-8 h-8 text-white" />
             </div>
-            <span class="login__mobile-text">{{ branding.name || 'CMS' }}</span>
           </template>
         </div>
 
-        <!-- Form Header -->
-        <div class="login__header">
+        <!-- Form Header (title and description are now optional) -->
+        <div v-if="branding.login?.title || branding.login?.description" class="login__header">
+          <h2 v-if="branding.login?.title" class="login__title">{{ branding.login.title }}</h2>
+          <p v-if="branding.login?.description" class="login__subtitle">{{ branding.login.description }}</p>
+        </div>
+        <div v-else class="login__header">
           <h2 class="login__title">Welcome back</h2>
           <p class="login__subtitle">Sign in to your account to continue</p>
         </div>
@@ -299,43 +302,29 @@ function adjustColor(hex: string, percent: number): string {
   max-width: 400px;
 }
 
-/* Mobile Logo */
-.login__mobile-logo {
+/* Centered Logo (visible on all devices) */
+.login__centered-logo {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
   margin-bottom: 40px;
 }
 
-@media (min-width: 1024px) {
-  .login__mobile-logo {
-    display: none;
-  }
-}
-
-.login__mobile-icon {
-  width: 40px;
-  height: 40px;
+.login__centered-icon {
+  width: 64px;
+  height: 64px;
   background: linear-gradient(135deg, var(--cms-primary, #2563eb) 0%, var(--cms-primary-hover, #1d4ed8) 100%);
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.25);
 }
 
-.login__mobile-logo-img {
-  max-width: 160px;
-  max-height: 48px;
+.login__centered-logo-img {
+  max-width: 200px;
+  max-height: 64px;
   object-fit: contain;
-}
-
-.login__mobile-text {
-  font-size: 24px;
-  font-weight: 700;
-  color: #111827;
-  letter-spacing: -0.02em;
 }
 
 /* Header */
