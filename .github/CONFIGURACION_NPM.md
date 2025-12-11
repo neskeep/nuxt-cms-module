@@ -13,10 +13,19 @@ He configurado 3 workflows de GitHub Actions en tu repositorio:
 ### Paso 1: Generar Token de npm
 
 1. Ir a: https://www.npmjs.com/settings/neskeep/tokens
-2. Click en **"Generate New Token"** → **"Classic Token"**
-3. Seleccionar **"Automation"** (para CI/CD)
-4. Copiar el token (empieza con `npm_...`)
+2. Click en **"Generate New Token"** → **"Granular Access Token"**
+3. Configurar:
+   - **Token Name**: `GitHub Actions`
+   - **Expiration**: 90 días o más
+   - **Packages and scopes**: Select packages → `@neskeep/nuxt-cms`
+   - **Permissions**: Read and write
+   - **Organizations**: Dejar vacío
+   - ✅ Marcar **"Bypass 2FA requirement"** (MUY IMPORTANTE)
+4. Click "Generate Token"
+5. Copiar el token (empieza con `npm_...`)
    - ⚠️ **IMPORTANTE**: Guárdalo en un lugar seguro, solo se muestra una vez
+
+**NOTA**: Si el token "Granular Access Token" no está disponible, usar "Classic Token" → "Automation" y luego configurar en npm para permitir tokens sin 2FA.
 
 ### Paso 2: Agregar Token a GitHub
 
