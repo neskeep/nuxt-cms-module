@@ -71,12 +71,12 @@ async function handleFileChange(event: Event) {
     const formData = new FormData()
     formData.append('file', file)
 
-    const result = await $fetch<{ id: string; filename: string }>('/api/cms/media/upload', {
+    const result = await $fetch<{ id: string; filename: string; url: string }>('/api/cms/media/upload', {
       method: 'POST',
       body: formData
     })
 
-    emit('update:modelValue', result.filename)
+    emit('update:modelValue', result.url)
   } catch (err: any) {
     uploadError.value = err.message || 'Upload failed'
   } finally {
