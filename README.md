@@ -878,6 +878,39 @@ Works with Tailwind CSS v3 and v4 — admin styles are fully isolated.
 
 ---
 
+## 📚 Documentation
+
+### Getting Started
+- [Quick Start](#-quick-start) - Installation and basic setup
+- [Configuration](#️-configuration) - Module configuration options
+- [Field Types](#-field-types) - Complete field reference
+- [Branding](#-branding) - Customize the admin panel
+
+### Additional Resources
+- [📋 Roadmap](./docs/ROADMAP.md) - Development roadmap to v1.0
+- [📊 Project Status](./docs/PROJECT-STATUS.md) - Current project status and features
+- [📝 Changelog](./docs/CHANGELOG.md) - Version history and updates
+- [🔄 Migration Guide](./docs/MIGRATION-ADMIN-TO-SUPERADMIN.md) - Upgrade pre-v0.5.1 users
+
+### Community
+- [GitHub Issues](https://github.com/neskeep/nuxt-cms-module/issues) - Bug reports and feature requests
+- [GitHub Discussions](https://github.com/neskeep/nuxt-cms-module/discussions) - Questions and community support
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Check out our [roadmap](./docs/ROADMAP.md) to see what we're working on.
+
+**Ways to contribute:**
+- 🐛 Report bugs
+- 💡 Suggest features
+- 📖 Improve documentation
+- 🌍 Add translations
+- 💻 Submit pull requests
+
+---
+
 ## 📖 Development
 
 ```bash

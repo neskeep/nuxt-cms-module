@@ -33,3 +33,6 @@ playground/node_modules
 
 # Claude context (local only)
 CLAUDE.md
+
+# Personal notes (local only)
+NOTES.md

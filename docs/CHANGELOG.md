@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2025-12-11
+
+### Added
+- Avatar display in user sidebar and tables with fallback to initials
+- User locale preferences system for personalized language settings
+- Migration scripts for upgrading admin users to super_admin role
+- Comprehensive roadmap documentation for v1.0
+- Project status documentation
+- Complete design system consistency across all field components
+
+### Fixed
+- Avatar upload now saves full URL instead of filename for proper rendering
+- Avatar preview handling supports both legacy (filename) and new (URL) formats
+- Settings route 404 error resolved by moving navigation to onMounted lifecycle
+- Relation field component now follows standard design system (removed Nuxt UI dependencies)
+- URL field component now follows standard design system (removed Nuxt UI dependencies)
+- Translatable badge visibility improved with white icon on primary background
+- Image field preview URL construction now handles both `/api` and `http` prefixes
+
+### Changed
+- Organized all documentation into /docs folder
+- CLAUDE.md added to .gitignore (local context only)
+- Improved backward compatibility for avatar field data
+
 ## [0.5.0] - 2025-12-11
 
 ### Added
@@ -77,7 +101,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Media management
 - User authentication
 
-[Unreleased]: https://github.com/neskeep/nuxt-cms-module/compare/v0.5.0...HEAD
+[Unreleased]: https://github.com/neskeep/nuxt-cms-module/compare/v0.6.0...HEAD
+[0.6.0]: https://github.com/neskeep/nuxt-cms-module/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/neskeep/nuxt-cms-module/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/neskeep/nuxt-cms-module/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/neskeep/nuxt-cms-module/compare/v0.2.0...v0.3.0
