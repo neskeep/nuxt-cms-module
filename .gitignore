@@ -30,3 +30,6 @@ playground/.cms
 playground/node_modules
 
 .playwright-mcp
+
+# Claude context (local only)
+CLAUDE.md
