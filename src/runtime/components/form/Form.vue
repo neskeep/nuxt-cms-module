@@ -455,15 +455,15 @@ const fieldGroups = computed(() => {
   justify-content: center;
   width: 20px;
   height: 20px;
-  background-color: var(--cms-primary-light, #dbeafe);
-  color: var(--cms-primary, #2563eb);
+  background-color: var(--cms-primary, #2563eb);
+  color: white;
   border-radius: 4px;
   cursor: help;
   transition: background-color 0.15s ease;
 }
 
 .cms-form__translatable-badge:hover {
-  background-color: var(--cms-primary-light, #bfdbfe);
+  background-color: var(--cms-primary-hover, #1d4ed8);
 }
 
 .cms-form__translatable-badge svg {

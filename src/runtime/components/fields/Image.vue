@@ -27,7 +27,11 @@ const uploading = ref(false)
 const uploadError = ref<string | null>(null)
 const previewUrl = computed(() => {
   if (!props.modelValue) return null
-  if (props.modelValue.startsWith('http')) return props.modelValue
+  // If it's already a full URL (starts with http or /api), use it directly
+  if (props.modelValue.startsWith('http') || props.modelValue.startsWith('/api')) {
+    return props.modelValue
+  }
+  // Otherwise, construct the URL
   return `/api/cms/media/file/${props.modelValue}`
 })
 
