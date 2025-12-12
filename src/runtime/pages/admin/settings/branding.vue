@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import { definePageMeta, useRuntimeConfig } from '#imports'
-import { useBranding } from '../../composables/useBranding'
+import { useBranding } from '../../../composables/useBranding'
 
 definePageMeta({
   layout: false,
