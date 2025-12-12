@@ -1,18 +1,19 @@
 import { defineNuxtPlugin, useRuntimeConfig } from '#imports'
-import { getDatabase } from '../server/utils/db'
 import { eq } from 'drizzle-orm'
-import * as schema from '../server/database/schema'
+import { useCmsDatabase, settingsSQLite, settingsPostgres, getDatabaseType } from '../server/database/client'
 
 export default defineNuxtPlugin(async () => {
   const config = useRuntimeConfig()
 
   try {
-    const db = getDatabase()
+    const db = useCmsDatabase()
+    const isPostgres = getDatabaseType() === 'postgresql'
+    const settingsTable = isPostgres ? settingsPostgres : settingsSQLite
 
     // Fetch branding settings from database
     const settings = await db.select()
-      .from(schema.settingsSQLite)
-      .where(eq(schema.settingsSQLite.key, 'branding'))
+      .from(settingsTable)
+      .where(eq(settingsTable.key, 'branding'))
       .limit(1)
 
     if (settings.length > 0) {

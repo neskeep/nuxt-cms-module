@@ -1,10 +1,11 @@
 import { defineEventHandler, readBody, createError } from 'h3'
-import { getDatabase } from '../../../utils/db'
 import { eq } from 'drizzle-orm'
-import * as schema from '../../../database/schema'
+import { useCmsDatabase, settingsSQLite, settingsPostgres, getDatabaseType } from '../../../database/client'
 
 export default defineEventHandler(async (event) => {
-  const db = getDatabase()
+  const db = useCmsDatabase()
+  const isPostgres = getDatabaseType() === 'postgresql'
+  const settingsTable = isPostgres ? settingsPostgres : settingsSQLite
   const body = await readBody(event)
 
   if (!body) {
@@ -19,21 +20,21 @@ export default defineEventHandler(async (event) => {
 
   // Check if branding setting already exists
   const existing = await db.select()
-    .from(schema.settingsSQLite)
-    .where(eq(schema.settingsSQLite.key, 'branding'))
+    .from(settingsTable)
+    .where(eq(settingsTable.key, 'branding'))
     .limit(1)
 
   if (existing.length > 0) {
     // Update existing setting
-    await db.update(schema.settingsSQLite)
+    await db.update(settingsTable)
       .set({
         value: brandingValue,
         updatedAt: now
       })
-      .where(eq(schema.settingsSQLite.key, 'branding'))
+      .where(eq(settingsTable.key, 'branding'))
   } else {
     // Insert new setting
-    await db.insert(schema.settingsSQLite).values({
+    await db.insert(settingsTable).values({
       key: 'branding',
       value: brandingValue,
       createdAt: now,
