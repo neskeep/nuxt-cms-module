@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import type { FieldsSchema } from '../../types'
 import { getFieldComponent } from '../fields'
+import TranslatableBadge from './TranslatableBadge.vue'
 
 interface Props {
   fields: FieldsSchema
@@ -257,7 +258,7 @@ const fieldGroups = computed(() => {
       </div>
 
       <p class="cms-form__locale-hint">
-        Fields marked with <span class="cms-form__translatable-badge-inline"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path d="M6.2 2.2a.75.75 0 0 0-1.4.6l.7 1.6a22.3 22.3 0 0 0-2.4.2.75.75 0 1 0 .2 1.5h.1l.9-.1A13 13 0 0 1 3 9.5a13.2 13.2 0 0 1-.7-1.4.75.75 0 0 0-1.4.6c.3.7.6 1.4 1 2a13.2 13.2 0 0 1-2.6 2.8.75.75 0 1 0 1 1.1 14.5 14.5 0 0 0 2.8-3l.2.2a.75.75 0 0 0 1-.7l-.4-.6a14.2 14.2 0 0 0 1.6-3.6h.1a.75.75 0 0 0 .2-1.5 22.1 22.1 0 0 0-2.4-.2l-.7-1.6ZM11 6a.75.75 0 0 1 .7.4l2.8 5.7a.75.75 0 1 1-1.4.7l-.5-1h-3.7l-.5 1a.75.75 0 1 1-1.4-.7l2.9-5.7A.75.75 0 0 1 11 6Zm1.3 4.3L11 7.6l-1.3 2.7h2.6Z"/></svg></span> can be translated
+        Fields marked with <TranslatableBadge inline /> can be translated
       </p>
     </div>
 
@@ -276,11 +277,7 @@ const fieldGroups = computed(() => {
         >
           <!-- Translatable indicator wrapper -->
           <div v-if="isMultilingual && translatable" class="cms-form__field-translatable">
-            <span class="cms-form__translatable-badge" :title="`This field can be translated (editing ${currentLocale.toUpperCase()})`">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor">
-                <path d="M6.2 2.2a.75.75 0 0 0-1.4.6l.7 1.6a22.3 22.3 0 0 0-2.4.2.75.75 0 1 0 .2 1.5h.1l.9-.1A13 13 0 0 1 3 9.5a13.2 13.2 0 0 1-.7-1.4.75.75 0 0 0-1.4.6c.3.7.6 1.4 1 2a13.2 13.2 0 0 1-2.6 2.8.75.75 0 1 0 1 1.1 14.5 14.5 0 0 0 2.8-3l.2.2a.75.75 0 0 0 1-.7l-.4-.6a14.2 14.2 0 0 0 1.6-3.6h.1a.75.75 0 0 0 .2-1.5 22.1 22.1 0 0 0-2.4-.2l-.7-1.6ZM11 6a.75.75 0 0 1 .7.4l2.8 5.7a.75.75 0 1 1-1.4.7l-.5-1h-3.7l-.5 1a.75.75 0 1 1-1.4-.7l2.9-5.7A.75.75 0 0 1 11 6Zm1.3 4.3L11 7.6l-1.3 2.7h2.6Z"/>
-              </svg>
-            </span>
+            <TranslatableBadge :locale="currentLocale" />
           </div>
           <component
             :is="getFieldComponent(field.type)"
@@ -388,22 +385,6 @@ const fieldGroups = computed(() => {
   gap: 4px;
 }
 
-.cms-form__translatable-badge-inline {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 16px;
-  height: 16px;
-  background-color: var(--cms-primary-light, #dbeafe);
-  color: var(--cms-primary, #2563eb);
-  border-radius: 4px;
-  vertical-align: middle;
-}
-
-.cms-form__translatable-badge-inline svg {
-  width: 10px;
-  height: 10px;
-}
 
 /* Fields Container */
 .cms-form__fields {
@@ -449,27 +430,6 @@ const fieldGroups = computed(() => {
   z-index: 1;
 }
 
-.cms-form__translatable-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-  background-color: var(--cms-primary, #2563eb);
-  color: white;
-  border-radius: 4px;
-  cursor: help;
-  transition: background-color 0.15s ease;
-}
-
-.cms-form__translatable-badge:hover {
-  background-color: var(--cms-primary-hover, #1d4ed8);
-}
-
-.cms-form__translatable-badge svg {
-  width: 12px;
-  height: 12px;
-}
 
 /* Locale Button Content Layout */
 .cms-form__locale-btn {
