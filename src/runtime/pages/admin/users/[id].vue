@@ -137,7 +137,8 @@ const submit = async () => {
       body.password = form.value.password
     }
 
-    if (form.value.roleId && !isOwnProfile.value) {
+    // Only include roleId if it changed and user is not editing own profile
+    if (form.value.roleId && !isOwnProfile.value && form.value.roleId !== userData.value?.data.roleId) {
       body.roleId = form.value.roleId
     }
 
@@ -146,21 +147,26 @@ const submit = async () => {
       body
     })
 
-    // Update global user state if editing own profile
-    if (isOwnProfile.value && updatedUser && typeof updatedUser === 'object') {
-      user.value = updatedUser as any
+    success.value = true
 
-      // If locale changed, show success message and reload page to apply new language
-      if (body.locale && body.locale !== userData.value?.data.locale) {
-        success.value = true
+    // If editing own profile and locale changed, reload page to apply new language
+    const localeChanged = body.locale && body.locale !== userData.value?.data.locale
+    if (isOwnProfile.value) {
+      // Update global user state
+      if (updatedUser && typeof updatedUser === 'object') {
+        user.value = updatedUser as any
+      }
+
+      if (localeChanged) {
+        // Reload page to apply new language
         setTimeout(() => {
-          window.location.href = `${config.public.cms.adminPath}/users`
+          window.location.href = config.public.cms.adminPath
         }, 1500)
         return
       }
     }
 
-    success.value = true
+    // Normal redirect
     setTimeout(() => {
       navigateTo(`${config.public.cms.adminPath}/users`)
     }, 1500)
