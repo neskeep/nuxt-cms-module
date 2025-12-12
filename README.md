@@ -297,50 +297,98 @@ DATABASE_URL=postgresql://user:password@localhost:5432/mydb
 
 ## 🎨 Branding
 
-Customize the admin panel appearance directly from the **Settings > Branding** page in your admin panel.
+Customize the admin panel appearance by configuring branding options in your `nuxt.config.ts`.
 
-### Configuring Branding
+### Configuration
 
-1. Navigate to **Settings > Branding** in your admin panel
-2. Upload your logo, favicon, and login background image
-3. Customize colors, titles, and footer text
-4. Click **Save Settings** to apply changes immediately
-
-All branding settings are stored in the database and applied dynamically—no code changes required!
-
-### Available Branding Options
-
-| Option | Type | Description |
-|--------|------|-------------|
-| **CMS Name** | text | Name shown in the sidebar and page titles |
-| **Logo** | image upload | Custom logo image for the sidebar (SVG recommended, max height 40px) |
-| **Primary Color** | color picker | Theme color for navigation, buttons, and links |
-| **Favicon** | image upload | Browser tab icon (ICO or PNG, 16x16 or 32x32) |
-| **Login Background** | image upload | Background image for the login page |
-| **Login Title** | text | Heading shown on the login page |
-| **Login Description** | text | Description text on the login page |
-| **Powered By Name** | text | Brand name in the footer |
-| **Powered By URL** | url | Optional link for the footer brand |
-| **Hide Powered By** | checkbox | Hide the "Powered by" footer completely |
-
-### Advanced: Default Branding via Config
-
-You can optionally set default branding values in your `nuxt.config.ts` that will be used if no database settings exist:
+Add branding customization to your Nuxt config:
 
 ```ts
 export default defineNuxtConfig({
+  modules: ['@neskeep/nuxt-cms'],
+
   cms: {
     admin: {
+      enabled: true,
+      path: '/admin',
       branding: {
+        // CMS name shown in sidebar and page titles
         name: 'My CMS',
-        primaryColor: '#2563eb'
+
+        // Custom logo image URL (replaces the icon in sidebar)
+        // Recommended: SVG format, max height 40px
+        logo: '/assets/logo.svg',
+
+        // Primary theme color (hex format)
+        primaryColor: '#2563eb',
+
+        // Powered by attribution in footer
+        poweredBy: {
+          name: 'Your Company',
+          url: 'https://yourcompany.com'
+        },
+
+        // Login page customization
+        login: {
+          title: 'Welcome Back',
+          description: 'Manage your content with ease',
+          backgroundImage: '/assets/login-bg.jpg'
+        }
       }
     }
   }
 })
 ```
 
-Note: Settings configured from the admin panel will override any config file defaults.
+### Available Branding Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `name` | `string` | `'CMS'` | Name shown in sidebar and page titles |
+| `logo` | `string` | - | Custom logo image URL (SVG recommended, max height 40px) |
+| `primaryColor` | `string` | `'#2563eb'` | Primary theme color for navigation, buttons, and links (hex format) |
+| `poweredBy.name` | `string` | `'Neskeep'` | Brand name shown in footer |
+| `poweredBy.url` | `string` | `'https://neskeep.com'` | Optional URL for footer brand link |
+| `login.title` | `string` | `'Content Management System'` | Heading shown on login page |
+| `login.description` | `string` | `'Manage your content...'` | Description text on login page |
+| `login.backgroundImage` | `string` | - | Background image URL for login page |
+
+### Full Example
+
+```ts
+export default defineNuxtConfig({
+  cms: {
+    admin: {
+      branding: {
+        name: 'Acme CMS',
+        logo: '/logo.svg',
+        primaryColor: '#7c3aed',
+        poweredBy: {
+          name: 'Acme Corp',
+          url: 'https://acme.com'
+        },
+        login: {
+          title: 'Acme Content Manager',
+          description: 'Access your content management dashboard',
+          backgroundImage: '/images/login-background.jpg'
+        }
+      }
+    }
+  }
+})
+```
+
+### Using Public Assets
+
+Place your logo and images in the `public/` directory:
+
+```
+public/
+├── logo.svg          → Accessible as '/logo.svg'
+├── favicon.ico       → Automatically used by Nuxt
+└── images/
+    └── login-bg.jpg  → Accessible as '/images/login-bg.jpg'
+```
 
 ---
 
@@ -760,11 +808,13 @@ const { items, total } = await $fetch('/api/cms/public/collections/posts', {
 
 ### Role-Based Access Control
 
-The CMS includes a full RBAC system:
+The CMS includes a full RBAC system with 4 built-in roles:
 
-- **Admin** — Full access to all features
-- **Editor** — Can manage content, no user management
-- **Custom Roles** — Define granular permissions
+- **Super Administrator** — Full access to all features including role management
+- **Administrator** — Manage content and users (cannot manage roles)
+- **Editor** — Create and edit content (no user management)
+- **Author** — Create and edit own content only
+- **Custom Roles** — Define granular permissions for specific needs
 
 ### Security Features
 
