@@ -889,10 +889,9 @@ Works with Tailwind CSS v3 and v4 — admin styles are fully isolated.
 - [Branding](#-branding) - Customize the admin panel
 
 ### Additional Resources
-- [📋 Roadmap](./docs/ROADMAP.md) - Development roadmap to v1.0
+- [📋 Roadmap](./docs/ROADMAP.md) - Future development plans
 - [📊 Project Status](./docs/PROJECT-STATUS.md) - Current project status and features
 - [📝 Changelog](./docs/CHANGELOG.md) - Version history and updates
-- [🔄 Migration Guide](./docs/MIGRATION-ADMIN-TO-SUPERADMIN.md) - Upgrade pre-v0.5.1 users
 
 ### Community
 - [GitHub Issues](https://github.com/neskeep/nuxt-cms-module/issues) - Bug reports and feature requests
