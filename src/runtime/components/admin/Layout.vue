@@ -4,16 +4,26 @@ import { useRuntimeConfig, useRoute } from '#imports'
 import { useCmsAdmin } from '../../composables/useCmsAdmin'
 import { useCmsI18n } from '../../composables/useCmsI18n'
 
-const { user, logout } = useCmsAdmin()
+const { user, logout, checkAuth } = useCmsAdmin()
 const config = useRuntimeConfig()
 const route = useRoute()
 const { t, init } = useCmsI18n()
 const branding = computed(() => config.public.cms.branding || {})
 
 // Initialize locale from user preference
-onMounted(() => {
+onMounted(async () => {
+  // Refresh user data to get latest locale
+  await checkAuth()
+
   if (user.value?.locale) {
     init(user.value.locale)
+  }
+})
+
+// Watch for user locale changes and update i18n
+watch(() => user.value?.locale, (newLocale) => {
+  if (newLocale) {
+    init(newLocale)
   }
 })
 
