@@ -9,7 +9,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
-const { updateBranding, refreshBranding } = useBranding()
+const { refreshBranding } = useBranding()
 
 // Upload states
 const uploadingLogo = ref(false)
@@ -122,13 +122,6 @@ watch(branding, (value) => {
 const loading = ref(false)
 const error = ref('')
 const success = ref(false)
-
-// Watch for form changes and update branding in real-time
-watch(() => form.value.primaryColor, (newColor) => {
-  if (newColor) {
-    updateBranding({ primaryColor: newColor })
-  }
-})
 
 // Preview colors
 const primaryColorStyle = computed(() => {
