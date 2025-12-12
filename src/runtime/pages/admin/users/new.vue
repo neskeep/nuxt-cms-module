@@ -18,7 +18,8 @@ const form = ref({
   password: '',
   confirmPassword: '',
   roleId: '',
-  avatar: ''
+  avatar: '',
+  locale: config.public.cms.config?.defaultLocale || 'en'
 })
 
 const loading = ref(false)
@@ -40,6 +41,31 @@ const roleOptions = computed(() => roles.value.map(role => ({
   value: role.id,
   label: role.displayName
 })))
+
+// Locale options
+const localeOptions = computed(() => {
+  const locales = config.public.cms.config?.locales || ['en']
+  return locales.map(locale => ({
+    value: locale,
+    label: getLocaleName(locale)
+  }))
+})
+
+function getLocaleName(code: string): string {
+  const names: Record<string, string> = {
+    en: 'English',
+    es: 'Español',
+    fr: 'Français',
+    de: 'Deutsch',
+    it: 'Italiano',
+    pt: 'Português',
+    ru: 'Русский',
+    ja: '日本語',
+    zh: '中文',
+    ar: 'العربية'
+  }
+  return names[code] || code.toUpperCase()
+}
 
 // Set default role to editor
 const editorRole = computed(() => roles.value.find(r => r.name === 'editor'))
@@ -77,7 +103,8 @@ const submit = async () => {
         email: form.value.email,
         password: form.value.password,
         roleId: form.value.roleId || undefined,
-        avatar: form.value.avatar || undefined
+        avatar: form.value.avatar || undefined,
+        locale: form.value.locale
       }
     })
 
@@ -186,6 +213,20 @@ const submit = async () => {
             <p class="form-field__hint">
               {{ roles.find(r => r.id === form.roleId)?.description || '' }}
             </p>
+          </div>
+
+          <!-- Language -->
+          <div class="form-field">
+            <CmsFieldSelect
+              v-model="form.locale"
+              :field="{
+                type: 'select',
+                label: 'Language',
+                options: localeOptions,
+                help: 'Preferred language for the admin interface'
+              }"
+              field-name="locale"
+            />
           </div>
 
           <!-- Avatar -->

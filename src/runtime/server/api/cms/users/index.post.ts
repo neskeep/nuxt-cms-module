@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
   await requirePermission(currentUser, 'users', 'create')
 
   const body = await readBody(event)
-  const { username, email, password, roleId, avatar } = body
+  const { username, email, password, roleId, avatar, locale } = body
 
   // Validate required fields
   if (!username || !email || !password) {
@@ -108,6 +108,7 @@ export default defineEventHandler(async (event) => {
     email,
     password: hashedPassword,
     avatar: avatar || null,
+    locale: locale || 'en',
     role: 'editor', // Legacy field
     roleId: assignedRoleId,
     createdAt: now,

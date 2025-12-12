@@ -22,7 +22,8 @@ const form = ref({
   password: '',
   confirmPassword: '',
   roleId: '',
-  avatar: ''
+  avatar: '',
+  locale: 'en'
 })
 
 const loading = ref(false)
@@ -37,6 +38,7 @@ const { data: userData, error: fetchError } = await useFetch<{
     avatar: string | null
     roleId: string | null
     roleName: string | null
+    locale: string
   }
 }>(`/api/cms/users/${userId}`)
 
@@ -61,6 +63,31 @@ const roleOptions = computed(() => roles.value.map(role => ({
   label: role.displayName
 })))
 
+// Locale options
+const localeOptions = computed(() => {
+  const locales = config.public.cms.config?.locales || ['en']
+  return locales.map(locale => ({
+    value: locale,
+    label: getLocaleName(locale)
+  }))
+})
+
+function getLocaleName(code: string): string {
+  const names: Record<string, string> = {
+    en: 'English',
+    es: 'Español',
+    fr: 'Français',
+    de: 'Deutsch',
+    it: 'Italiano',
+    pt: 'Português',
+    ru: 'Русский',
+    ja: '日本語',
+    zh: '中文',
+    ar: 'العربية'
+  }
+  return names[code] || code.toUpperCase()
+}
+
 // Initialize form with user data
 watch(userData, (data) => {
   if (data?.data) {
@@ -68,6 +95,7 @@ watch(userData, (data) => {
     form.value.email = data.data.email
     form.value.roleId = data.data.roleId || ''
     form.value.avatar = data.data.avatar || ''
+    form.value.locale = data.data.locale || 'en'
   }
 }, { immediate: true })
 
@@ -99,7 +127,8 @@ const submit = async () => {
     const body: Record<string, string | undefined> = {
       username: form.value.username,
       email: form.value.email,
-      avatar: form.value.avatar || undefined
+      avatar: form.value.avatar || undefined,
+      locale: form.value.locale
     }
 
     if (form.value.password) {
@@ -227,6 +256,20 @@ const submit = async () => {
             <p v-else class="form-field__hint">
               {{ roles.find(r => r.id === form.roleId)?.description || '' }}
             </p>
+          </div>
+
+          <!-- Language -->
+          <div class="form-field">
+            <CmsFieldSelect
+              v-model="form.locale"
+              :field="{
+                type: 'select',
+                label: 'Language',
+                options: localeOptions,
+                help: 'Preferred language for the admin interface'
+              }"
+              field-name="locale"
+            />
           </div>
 
           <!-- Avatar -->
