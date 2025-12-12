@@ -63,10 +63,11 @@ const roleOptions = computed(() => roles.value.map(role => ({
   label: role.displayName
 })))
 
-// Locale options
+// Locale options - Available admin interface languages
 const localeOptions = computed(() => {
-  const locales = config.public.cms.config?.locales || ['en']
-  return locales.map(locale => ({
+  // These are the available admin interface languages, not CMS content locales
+  const adminLocales = ['en', 'es']
+  return adminLocales.map(locale => ({
     value: locale,
     label: getLocaleName(locale)
   }))
