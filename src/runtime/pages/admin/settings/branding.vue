@@ -146,71 +146,56 @@ function adjustColor(hex: string, percent: number, alpha?: number): string {
   return '#' + (0x1000000 + (r << 16) + (g << 8) + b).toString(16).slice(1)
 }
 
-// Submit handler (note: this is a preview only, actual config is in cms.config.ts)
+// Submit handler - saves branding to database
 const submit = async () => {
   error.value = ''
   success.value = false
   loading.value = true
 
   try {
-    // In a real implementation, this would save to a database or config file
-    // For now, we show a message that config must be updated manually
-    await new Promise(resolve => setTimeout(resolve, 500))
+    // Build branding config object
+    const brandingConfig = {
+      name: form.value.name,
+      logo: form.value.logo,
+      primaryColor: form.value.primaryColor,
+      favicon: form.value.favicon,
+      login: {
+        title: form.value.loginTitle,
+        description: form.value.loginDescription,
+        backgroundImage: form.value.loginBackgroundImage
+      },
+      poweredBy: {
+        name: form.value.poweredByName,
+        url: form.value.poweredByUrl
+      },
+      hidePoweredBy: form.value.hidePoweredBy
+    }
+
+    // Save to database via API
+    const response = await fetch('/api/cms/settings/branding', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(brandingConfig),
+      credentials: 'include'
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to save branding settings')
+    }
 
     success.value = true
+
+    // Reload the page after a short delay to apply new branding
     setTimeout(() => {
-      success.value = false
-    }, 3000)
+      window.location.reload()
+    }, 1500)
   } catch (err: unknown) {
     const e = err as { message?: string }
     error.value = e.message || 'Failed to save settings'
   } finally {
     loading.value = false
-  }
-}
-
-// Generate config code
-const configCode = computed(() => {
-  const config: Record<string, unknown> = {}
-
-  if (form.value.name) config.name = form.value.name
-  if (form.value.logo) config.logo = form.value.logo
-  if (form.value.primaryColor !== '#2563eb') config.primaryColor = form.value.primaryColor
-  if (form.value.favicon) config.favicon = form.value.favicon
-  if (form.value.hidePoweredBy) config.hidePoweredBy = true
-
-  if (form.value.loginTitle || form.value.loginDescription || form.value.loginBackgroundImage) {
-    config.login = {}
-    if (form.value.loginTitle) config.login.title = form.value.loginTitle
-    if (form.value.loginDescription) config.login.description = form.value.loginDescription
-    if (form.value.loginBackgroundImage) config.login.backgroundImage = form.value.loginBackgroundImage
-  }
-
-  if (form.value.poweredByName !== 'Neskeep' || form.value.poweredByUrl !== 'https://neskeep.com') {
-    config.poweredBy = {}
-    if (form.value.poweredByName !== 'Neskeep') config.poweredBy.name = form.value.poweredByName
-    if (form.value.poweredByUrl !== 'https://neskeep.com') config.poweredBy.url = form.value.poweredByUrl
-  }
-
-  return `export default defineNuxtConfig({
-  modules: ['@neskeep/nuxt-cms'],
-
-  cms: {
-    branding: ${JSON.stringify(config, null, 6).replace(/\n/g, '\n    ')}
-  }
-})`
-})
-
-// Copy to clipboard
-async function copyConfig() {
-  try {
-    await navigator.clipboard.writeText(configCode.value)
-    success.value = true
-    setTimeout(() => {
-      success.value = false
-    }, 2000)
-  } catch (err) {
-    error.value = 'Failed to copy to clipboard'
   }
 }
 </script>
@@ -241,7 +226,7 @@ async function copyConfig() {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
               </svg>
-              Settings updated successfully! Update your cms.config.ts file.
+              Branding settings saved successfully! Reloading...
             </div>
 
             <!-- Error Message -->
@@ -448,14 +433,8 @@ async function copyConfig() {
 
             <!-- Actions -->
             <div class="settings-form__actions">
-              <button type="button" class="btn btn--secondary" @click="copyConfig">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
-                </svg>
-                Copy Config
-              </button>
               <button type="submit" class="btn btn--primary" :disabled="loading">
-                {{ loading ? 'Saving...' : 'Save Preview' }}
+                {{ loading ? 'Saving...' : 'Save Settings' }}
               </button>
             </div>
           </form>
@@ -503,13 +482,6 @@ async function copyConfig() {
               <div class="logo-preview">
                 <img :src="form.logo" :alt="form.name || 'Logo'" class="logo-preview__img" />
               </div>
-            </div>
-
-            <!-- Config Code -->
-            <div class="preview-section">
-              <h4 class="preview-section__title">Configuration Code</h4>
-              <p class="preview-section__hint">Add this to your <code>nuxt.config.ts</code></p>
-              <pre class="config-code">{{ configCode }}</pre>
             </div>
           </div>
         </div>

@@ -32,7 +32,8 @@ export function initSqliteDatabase(filename: string) {
       translations: schema.translationsSqlite,
       media: schema.mediaSqlite,
       users: schema.usersSqlite,
-      roles: schema.rolesSqlite
+      roles: schema.rolesSqlite,
+      settings: schema.settingsSQLite
     }
   })
 
@@ -198,6 +199,22 @@ function createTables(sqlite: Database.Database) {
   // Create index on role_id (must be after column exists)
   sqlite.exec(`
     CREATE INDEX IF NOT EXISTS idx_users_role_id ON cms_users(role_id)
+  `)
+
+  // Create cms_settings table
+  sqlite.exec(`
+    CREATE TABLE IF NOT EXISTS cms_settings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      key TEXT NOT NULL UNIQUE,
+      value TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL
+    )
+  `)
+
+  // Create index on key
+  sqlite.exec(`
+    CREATE INDEX IF NOT EXISTS idx_settings_key ON cms_settings(key)
   `)
 }
 

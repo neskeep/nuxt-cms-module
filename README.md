@@ -295,50 +295,50 @@ DATABASE_URL=postgresql://user:password@localhost:5432/mydb
 
 ## 🎨 Branding
 
-Customize the admin panel appearance with the `branding` configuration:
+Customize the admin panel appearance directly from the **Settings > Branding** page in your admin panel.
+
+### Configuring Branding
+
+1. Navigate to **Settings > Branding** in your admin panel
+2. Upload your logo, favicon, and login background image
+3. Customize colors, titles, and footer text
+4. Click **Save Settings** to apply changes immediately
+
+All branding settings are stored in the database and applied dynamically—no code changes required!
+
+### Available Branding Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| **CMS Name** | text | Name shown in the sidebar and page titles |
+| **Logo** | image upload | Custom logo image for the sidebar (SVG recommended, max height 40px) |
+| **Primary Color** | color picker | Theme color for navigation, buttons, and links |
+| **Favicon** | image upload | Browser tab icon (ICO or PNG, 16x16 or 32x32) |
+| **Login Background** | image upload | Background image for the login page |
+| **Login Title** | text | Heading shown on the login page |
+| **Login Description** | text | Description text on the login page |
+| **Powered By Name** | text | Brand name in the footer |
+| **Powered By URL** | url | Optional link for the footer brand |
+| **Hide Powered By** | checkbox | Hide the "Powered by" footer completely |
+
+### Advanced: Default Branding via Config
+
+You can optionally set default branding values in your `nuxt.config.ts` that will be used if no database settings exist:
 
 ```ts
 export default defineNuxtConfig({
   cms: {
     admin: {
       branding: {
-        // Logo and name
-        name: 'My CMS',                    // Text shown in sidebar
-        logo: '/images/logo.svg',          // Custom logo image URL
-
-        // Theme color (applies to navigation, buttons, links, etc.)
-        primaryColor: '#2563eb',           // Primary color (hex)
-
-        // "Powered by" footer
-        poweredBy: {
-          name: 'Neskeep',                 // Brand name
-          url: 'https://neskeep.com'       // Optional link
-        },
-
-        // Login page customization
-        login: {
-          backgroundImage: '/images/login-bg.jpg',  // Left panel background
-          title: 'Welcome to My CMS',
-          description: 'Manage your content with ease.'
-        }
+        name: 'My CMS',
+        primaryColor: '#2563eb'
       }
     }
   }
 })
 ```
 
-### Branding Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `name` | `string` | `'CMS'` | CMS name shown in logo area |
-| `logo` | `string` | - | Custom logo image URL |
-| `primaryColor` | `string` | `'#2563eb'` | Primary theme color (hex) - applies to nav, buttons, links, hovers |
-| `poweredBy.name` | `string` | `'Neskeep'` | "Powered by" text |
-| `poweredBy.url` | `string` | `'https://neskeep.com'` | Optional link URL |
-| `login.backgroundImage` | `string` | - | Login left panel background |
-| `login.title` | `string` | `'Content Management System'` | Login page heading |
-| `login.description` | `string` | - | Login page description |
+Note: Settings configured from the admin panel will override any config file defaults.
 
 ---
 

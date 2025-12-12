@@ -25,7 +25,8 @@ export async function initPostgresDatabase(connectionUrl: string) {
       translations: schema.translationsPostgres,
       media: schema.mediaPostgres,
       users: schema.usersPostgres,
-      roles: schema.rolesPostgres
+      roles: schema.rolesPostgres,
+      settings: schema.settingsPostgres
     }
   })
 
@@ -184,6 +185,22 @@ async function createTables(client: ReturnType<typeof postgres>) {
   } catch {
     // Column might already exist
   }
+
+  // Create cms_settings table
+  await client`
+    CREATE TABLE IF NOT EXISTS cms_settings (
+      id SERIAL PRIMARY KEY,
+      key VARCHAR(100) NOT NULL UNIQUE,
+      value TEXT NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+      updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `
+
+  // Create index on key
+  await client`
+    CREATE INDEX IF NOT EXISTS idx_settings_key ON cms_settings(key)
+  `
 }
 
 export type PostgresDatabase = ReturnType<typeof drizzle>
