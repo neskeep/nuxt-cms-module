@@ -205,7 +205,7 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
     addServerPlugin(resolver.resolve('./runtime/server/plugins/database'))
 
     // Add server plugin for branding
-    addServerPlugin(resolver.resolve('./runtime/plugins/branding.server'))
+    addServerPlugin(resolver.resolve('./runtime/server/plugins/branding'))
 
     // Add security middleware for API routes
     addServerHandler({
