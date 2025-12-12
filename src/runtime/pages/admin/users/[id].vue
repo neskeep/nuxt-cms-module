@@ -28,6 +28,7 @@ const form = ref({
 
 const loading = ref(false)
 const error = ref('')
+const success = ref(false)
 
 // Fetch user
 const { data: userData, error: fetchError } = await useFetch<{
@@ -148,9 +149,21 @@ const submit = async () => {
     // Update global user state if editing own profile
     if (isOwnProfile.value && updatedUser && typeof updatedUser === 'object') {
       user.value = updatedUser as any
+
+      // If locale changed, show success message and reload page to apply new language
+      if (body.locale && body.locale !== userData.value?.data.locale) {
+        success.value = true
+        setTimeout(() => {
+          window.location.href = `${config.public.cms.adminPath}/users`
+        }, 1500)
+        return
+      }
     }
 
-    navigateTo(`${config.public.cms.adminPath}/users`)
+    success.value = true
+    setTimeout(() => {
+      navigateTo(`${config.public.cms.adminPath}/users`)
+    }, 1500)
   } catch (err: unknown) {
     const e = err as { data?: { statusMessage?: string } }
     error.value = e.data?.statusMessage || 'Failed to update user'
@@ -176,6 +189,9 @@ const submit = async () => {
 
       <!-- Form -->
       <form class="user-form" @submit.prevent="submit">
+        <div v-if="success" class="user-form__success">
+          User updated successfully!
+        </div>
         <div v-if="error" class="user-form__error">
           {{ error }}
         </div>
@@ -344,6 +360,16 @@ const submit = async () => {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 24px;
+}
+
+.user-form__success {
+  padding: 12px 16px;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  color: #16a34a;
+  font-size: 14px;
+  margin-bottom: 24px;
 }
 
 .user-form__error {
