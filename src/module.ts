@@ -463,6 +463,19 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
       handler: resolver.resolve('./runtime/server/api/cms/roles/[id].delete')
     })
 
+    // Settings API
+    addServerHandler({
+      route: '/api/cms/settings/branding',
+      method: 'get',
+      handler: resolver.resolve('./runtime/server/api/cms/settings/branding.get')
+    })
+
+    addServerHandler({
+      route: '/api/cms/settings/branding',
+      method: 'put',
+      handler: resolver.resolve('./runtime/server/api/cms/settings/branding.put')
+    })
+
     // Public API (no authentication required)
     addServerHandler({
       route: '/api/cms/public/collections/:name',
