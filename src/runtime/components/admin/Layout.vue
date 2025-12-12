@@ -50,6 +50,9 @@ function adjustColor(hex: string, percent: number): string {
 // Mobile sidebar state
 const sidebarOpen = ref(false)
 
+// User dropdown state
+const userDropdownOpen = ref(false)
+
 const navigation = computed(() => [
   {
     label: t('nav.dashboard'),
@@ -146,7 +149,7 @@ watch(() => route.path, () => {
 
       <!-- User section -->
       <div class="cms-user" v-if="user">
-        <div class="cms-user__profile">
+        <button class="cms-user__profile" @click="userDropdownOpen = !userDropdownOpen">
           <div class="cms-user__avatar-wrap">
             <img v-if="user.avatar" :src="user.avatar" :alt="user.username" class="cms-user__avatar-img" />
             <span v-else>{{ user.username?.charAt(0).toUpperCase() || 'U' }}</span>
@@ -155,12 +158,22 @@ watch(() => route.path, () => {
             <span class="cms-user__name">@{{ user.username }}</span>
             <span class="cms-user__role">{{ user.roleName || user.role || 'User' }}</span>
           </div>
-        </div>
-
-        <button class="cms-user__logout" @click="logout" :title="t('common.logout')">
-          <UIcon name="i-heroicons-arrow-right-on-rectangle" class="cms-user__logout-icon" />
-          {{ t('common.logout') }}
+          <UIcon name="i-heroicons-chevron-up" class="cms-user__chevron" :class="{ 'cms-user__chevron--open': userDropdownOpen }" />
         </button>
+
+        <!-- Dropdown menu -->
+        <Transition name="dropdown">
+          <div v-if="userDropdownOpen" class="cms-user__dropdown">
+            <NuxtLink :to="`${config.public.cms.adminPath}/users/${user.id}`" class="cms-user__dropdown-item" @click="userDropdownOpen = false">
+              <UIcon name="i-heroicons-user" class="cms-user__dropdown-icon" />
+              {{ t('common.profile') }}
+            </NuxtLink>
+            <button class="cms-user__dropdown-item cms-user__dropdown-item--logout" @click="logout">
+              <UIcon name="i-heroicons-arrow-right-on-rectangle" class="cms-user__dropdown-icon" />
+              {{ t('common.logout') }}
+            </button>
+          </div>
+        </Transition>
       </div>
     </aside>
 
@@ -407,9 +420,7 @@ watch(() => route.path, () => {
   padding: 12px;
   border-top: 1px solid #e5e7eb !important;
   flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  position: relative;
 }
 
 .cms-user__profile {
@@ -417,6 +428,16 @@ watch(() => route.path, () => {
   align-items: center;
   gap: 12px;
   padding: 8px 12px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.cms-user__profile:hover {
+  background-color: #f3f4f6 !important;
 }
 
 .cms-user__avatar-wrap {
@@ -464,31 +485,78 @@ watch(() => route.path, () => {
   text-overflow: ellipsis;
 }
 
-.cms-user__logout {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background-color: transparent !important;
-  border: 1px solid #e5e7eb !important;
-  color: #6b7280 !important;
-  font-size: 13px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.cms-user__logout:hover {
-  background-color: #fef2f2 !important;
-  border-color: #fca5a5 !important;
-  color: #dc2626 !important;
-}
-
-.cms-user__logout-icon {
+.cms-user__chevron {
   width: 16px;
   height: 16px;
+  color: #9ca3af !important;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.cms-user__chevron--open {
+  transform: rotate(180deg);
+}
+
+/* User Dropdown */
+.cms-user__dropdown {
+  position: absolute;
+  bottom: 100%;
+  left: 12px;
+  right: 12px;
+  margin-bottom: 8px;
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 100;
+}
+
+.cms-user__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #374151 !important;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.cms-user__dropdown-item:hover {
+  background-color: #f3f4f6 !important;
+}
+
+.cms-user__dropdown-item--logout {
+  color: #dc2626 !important;
+  border-top: 1px solid #e5e7eb !important;
+}
+
+.cms-user__dropdown-item--logout:hover {
+  background-color: #fef2f2 !important;
+}
+
+.cms-user__dropdown-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Dropdown transition */
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 /* ============================================

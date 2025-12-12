@@ -72,7 +72,7 @@ const formatDate = (date: string) => {
       <div class="users-page__header">
         <div>
           <h1 class="users-page__title">{{ t('users.title') }}</h1>
-          <p class="users-page__subtitle">Manage user accounts and permissions</p>
+          <p class="users-page__subtitle">{{ t('users.subtitle') }}</p>
         </div>
         <NuxtLink :to="`${config.public.cms.adminPath}/users/new`" class="btn btn--primary">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="btn__icon">

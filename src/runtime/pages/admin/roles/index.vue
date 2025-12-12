@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { definePageMeta, useRuntimeConfig, useFetch, navigateTo } from '#imports'
+import { useCmsI18n } from '../../../composables/useCmsI18n'
 
 definePageMeta({
   layout: false,
@@ -8,6 +9,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
+const { t } = useCmsI18n()
 
 // Fetch roles
 const { data: rolesData, refresh, pending } = await useFetch<{
@@ -25,7 +27,7 @@ const roles = computed(() => rolesData.value?.data || [])
 
 // Delete role
 const deleteRole = async (roleId: string, roleName: string) => {
-  if (!confirm(`Are you sure you want to delete role "${roleName}"? This action cannot be undone.`)) {
+  if (!confirm(t('roles.confirmDelete'))) {
     return
   }
 
@@ -34,7 +36,7 @@ const deleteRole = async (roleId: string, roleName: string) => {
     refresh()
   } catch (error: unknown) {
     const err = error as { data?: { statusMessage?: string } }
-    alert(err.data?.statusMessage || 'Failed to delete role')
+    alert(err.data?.statusMessage || t('roles.roleDeleted'))
   }
 }
 
@@ -54,24 +56,24 @@ const formatDate = (date: string) => {
       <!-- Header -->
       <div class="roles-page__header">
         <div>
-          <h1 class="roles-page__title">Roles</h1>
-          <p class="roles-page__subtitle">Manage user roles and permissions</p>
+          <h1 class="roles-page__title">{{ t('roles.title') }}</h1>
+          <p class="roles-page__subtitle">{{ t('users.subtitle') }}</p>
         </div>
         <NuxtLink :to="`${config.public.cms.adminPath}/roles/new`" class="btn btn--primary">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="btn__icon">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
           </svg>
-          Add Role
+          {{ t('roles.createRole') }}
         </NuxtLink>
       </div>
 
       <!-- Roles Grid -->
       <div class="roles-grid">
         <div v-if="pending" class="roles-grid__loading">
-          Loading roles...
+          {{ t('common.loading') }}
         </div>
         <div v-else-if="roles.length === 0" class="roles-grid__empty">
-          No roles found
+          {{ t('roles.noRoles') }}
         </div>
         <template v-else>
           <div
@@ -90,11 +92,11 @@ const formatDate = (date: string) => {
                 <h3 class="role-card__name">{{ role.displayName }}</h3>
                 <span class="role-card__slug">{{ role.name }}</span>
               </div>
-              <span v-if="role.isSystem" class="role-card__badge">System</span>
+              <span v-if="role.isSystem" class="role-card__badge">{{ t('roles.systemRole') }}</span>
             </div>
 
             <p class="role-card__description">
-              {{ role.description || 'No description' }}
+              {{ role.description || t('roles.noDescription') }}
             </p>
 
             <div class="role-card__footer">
@@ -103,7 +105,7 @@ const formatDate = (date: string) => {
                 <NuxtLink
                   :to="`${config.public.cms.adminPath}/roles/${role.id}`"
                   class="action-btn action-btn--edit"
-                  title="Edit role"
+                  :title="t('roles.editRole')"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
@@ -112,7 +114,7 @@ const formatDate = (date: string) => {
                 <button
                   v-if="!role.isSystem"
                   class="action-btn action-btn--delete"
-                  title="Delete role"
+                  :title="t('roles.deleteRole')"
                   @click="deleteRole(role.id, role.displayName)"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

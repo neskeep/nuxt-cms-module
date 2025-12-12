@@ -108,14 +108,18 @@
   },
   "singletons": {
     "title": "Contenido único",
+    "subtitle": "Gestionar páginas de contenido de instancia única",
     "noSingletons": "No se encontró contenido único",
+    "noSingletonsConfigured": "No hay contenido único configurado",
     "edit": "Editar {singleton}",
     "updated": "Contenido único actualizado exitosamente",
     "saveDraft": "Guardar borrador",
-    "publishChanges": "Publicar cambios"
+    "publishChanges": "Publicar cambios",
+    "editSingleInstance": "Editar contenido de instancia única"
   },
   "media": {
     "title": "Biblioteca de medios",
+    "subtitle": "Subir y gestionar archivos",
     "upload": "Subir",
     "uploadFiles": "Subir archivos",
     "dropFiles": "Arrastra archivos aquí o haz clic para subir",
@@ -140,6 +144,7 @@
   },
   "users": {
     "title": "Usuarios",
+    "subtitle": "Gestionar cuentas de usuario y permisos",
     "createUser": "Crear usuario",
     "editUser": "Editar usuario",
     "deleteUser": "Eliminar usuario",
@@ -162,7 +167,12 @@
     "noUsers": "No se encontraron usuarios",
     "searchPlaceholder": "Buscar usuarios...",
     "cannotChangeOwnRole": "No puedes cambiar tu propio rol",
-    "userProfile": "Perfil de usuario"
+    "userProfile": "Perfil de usuario",
+    "backToUsers": "Volver a Usuarios",
+    "language": "Idioma",
+    "languageHelp": "Idioma preferido para la interfaz de administración",
+    "creating": "Creando...",
+    "updating": "Actualizando..."
   },
   "roles": {
     "title": "Roles",
@@ -172,6 +182,7 @@
     "roleName": "Nombre del rol",
     "displayName": "Nombre a mostrar",
     "description": "Descripción",
+    "noDescription": "Sin descripción",
     "permissions": "Permisos",
     "systemRole": "Rol del sistema",
     "customRole": "Rol personalizado",
@@ -183,6 +194,9 @@
     "noRoles": "No se encontraron roles",
     "permissionsMatrix": "Matriz de permisos",
     "resource": "Recurso",
+    "backToRoles": "Volver a Roles",
+    "creating": "Creando...",
+    "updating": "Actualizando...",
     "actions": {
       "create": "Crear",
       "read": "Leer",

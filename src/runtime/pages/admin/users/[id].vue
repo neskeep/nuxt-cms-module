@@ -14,7 +14,7 @@ definePageMeta({
 const config = useRuntimeConfig()
 const route = useRoute()
 const { user: currentUser } = useCmsAdmin()
-const { setLocale } = useCmsI18n()
+const { t, setLocale } = useCmsI18n()
 const userId = route.params.id as string
 
 // Form state
@@ -185,15 +185,15 @@ const submit = async () => {
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
           </svg>
-          Back to Users
+          {{ t('users.backToUsers') }}
         </NuxtLink>
-        <h1 class="user-form-page__title">Edit User</h1>
+        <h1 class="user-form-page__title">{{ t('users.editUser') }}</h1>
       </div>
 
       <!-- Form -->
       <form class="user-form" @submit.prevent="submit">
         <div v-if="success" class="user-form__success">
-          User updated successfully!
+          {{ t('users.userUpdated') }}
         </div>
         <div v-if="error" class="user-form__error">
           {{ error }}
@@ -311,10 +311,10 @@ const submit = async () => {
         <!-- Actions -->
         <div class="user-form__actions">
           <NuxtLink :to="`${config.public.cms.adminPath}/users`" class="btn btn--secondary">
-            Cancel
+            {{ t('common.cancel') }}
           </NuxtLink>
           <button type="submit" class="btn btn--primary" :disabled="loading">
-            {{ loading ? 'Saving...' : 'Save Changes' }}
+            {{ loading ? t('common.saving') : t('common.save') }}
           </button>
         </div>
       </form>

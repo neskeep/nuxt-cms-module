@@ -70,8 +70,10 @@ npm install @neskeep/nuxt-cms
 
 ### Internationalization
 - **Multi-language** — Built-in i18n support with per-field translations
+- **Admin UI i18n** — Complete admin interface in English and Spanish
+- **User Preferences** — Per-user language settings with instant application
 - **Visual Indicators** — Translation badges in the admin UI
-- **Locale Switcher** — Easy language switching in forms
+- **Locale Switcher** — Easy language switching in forms and profile
 
 </td>
 <td width="50%">

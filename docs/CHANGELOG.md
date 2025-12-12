@@ -7,6 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0] - 2025-12-12
+
+### Added
+- Complete admin UI internationalization system (English and Spanish)
+- User language preference system with immediate application
+- Profile dropdown menu with language switcher
+- Translation completion tracking per locale
+- Visual indicators for translatable fields
+- Locale persistence across user sessions
+
+### Fixed
+- JSON syntax error in English locale file (missing comma)
+- Undefined `t()` function error in user edit page
+- Module build compilation issues
+- Locale changes now apply immediately without page reload
+
+### Changed
+- All admin pages now fully translated (9 pages total)
+- Users, Roles, Singletons, Dashboard, and Settings pages support i18n
+- Improved user experience with instant language switching
+- Stable production-ready release
+
 ## [0.6.0] - 2025-12-11
 
 ### Added

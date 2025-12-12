@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { definePageMeta, useRuntimeConfig, useFetch, navigateTo } from '#imports'
+import { useCmsI18n } from '../../../composables/useCmsI18n'
 import CmsFieldSelect from '../../../components/fields/Select.vue'
 import CmsFieldImage from '../../../components/fields/Image.vue'
 
@@ -10,6 +11,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
+const { t } = useCmsI18n()
 
 // Form state
 const form = ref({
@@ -128,9 +130,9 @@ const submit = async () => {
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
           </svg>
-          Back to Users
+          {{ t('users.backToUsers') }}
         </NuxtLink>
-        <h1 class="user-form-page__title">Create User</h1>
+        <h1 class="user-form-page__title">{{ t('users.createUser') }}</h1>
       </div>
 
       <!-- Form -->
@@ -249,10 +251,10 @@ const submit = async () => {
         <!-- Actions -->
         <div class="user-form__actions">
           <NuxtLink :to="`${config.public.cms.adminPath}/users`" class="btn btn--secondary">
-            Cancel
+            {{ t('common.cancel') }}
           </NuxtLink>
           <button type="submit" class="btn btn--primary" :disabled="loading">
-            {{ loading ? 'Creating...' : 'Create User' }}
+            {{ loading ? t('users.creating') : t('users.createUser') }}
           </button>
         </div>
       </form>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { definePageMeta, useRuntimeConfig, useFetch } from '#imports'
+import { useCmsI18n } from '../../../composables/useCmsI18n'
 
 definePageMeta({
   layout: false,
@@ -8,6 +9,7 @@ definePageMeta({
 })
 
 const config = useRuntimeConfig()
+const { t } = useCmsI18n()
 
 // Icon mapping for singletons
 const iconMap: Record<string, string> = {
@@ -38,8 +40,8 @@ const singletons = computed(() => {
       <!-- Header -->
       <div class="page__header">
         <div>
-          <h1 class="page__title">Singletons</h1>
-          <p class="page__subtitle">Manage single-instance content pages</p>
+          <h1 class="page__title">{{ t('singletons.title') }}</h1>
+          <p class="page__subtitle">{{ t('singletons.subtitle') }}</p>
         </div>
       </div>
 
@@ -69,7 +71,7 @@ const singletons = computed(() => {
         <div class="empty-state__icon">
           <UIcon name="i-heroicons-inbox" class="w-8 h-8" />
         </div>
-        <h3 class="empty-state__title">No singletons configured</h3>
+        <h3 class="empty-state__title">{{ t('singletons.noSingletonsConfigured') }}</h3>
         <p class="empty-state__text">
           Define your singletons in <code class="empty-state__code">cms.config.ts</code>
         </p>

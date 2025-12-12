@@ -108,7 +108,7 @@ const mediaCount = computed(() => {
             </div>
             <div class="action-card__content">
               <span class="action-card__title">{{ t('nav.collections') }}</span>
-              <span class="action-card__description">Manage your content collections</span>
+              <span class="action-card__description">{{ t('collections.title') }}</span>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="action-card__arrow">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -124,7 +124,7 @@ const mediaCount = computed(() => {
             </div>
             <div class="action-card__content">
               <span class="action-card__title">{{ t('nav.singletons') }}</span>
-              <span class="action-card__description">Edit single-instance content</span>
+              <span class="action-card__description">{{ t('singletons.editSingleInstance') }}</span>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="action-card__arrow">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -140,7 +140,7 @@ const mediaCount = computed(() => {
             </div>
             <div class="action-card__content">
               <span class="action-card__title">{{ t('media.title') }}</span>
-              <span class="action-card__description">Upload and manage files</span>
+              <span class="action-card__description">{{ t('media.subtitle') }}</span>
             </div>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="action-card__arrow">
               <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />

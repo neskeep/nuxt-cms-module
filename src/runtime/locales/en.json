@@ -108,14 +108,18 @@
   },
   "singletons": {
     "title": "Singletons",
+    "subtitle": "Manage single-instance content pages",
     "noSingletons": "No singletons found",
+    "noSingletonsConfigured": "No singletons configured",
     "edit": "Edit {singleton}",
     "updated": "Singleton updated successfully",
     "saveDraft": "Save Draft",
-    "publishChanges": "Publish Changes"
+    "publishChanges": "Publish Changes",
+    "editSingleInstance": "Edit single-instance content"
   },
   "media": {
     "title": "Media Library",
+    "subtitle": "Upload and manage files",
     "upload": "Upload",
     "uploadFiles": "Upload Files",
     "dropFiles": "Drop files here or click to upload",
@@ -140,6 +144,7 @@
   },
   "users": {
     "title": "Users",
+    "subtitle": "Manage user accounts and permissions",
     "createUser": "Create User",
     "editUser": "Edit User",
     "deleteUser": "Delete User",
@@ -162,7 +167,12 @@
     "noUsers": "No users found",
     "searchPlaceholder": "Search users...",
     "cannotChangeOwnRole": "You cannot change your own role",
-    "userProfile": "User Profile"
+    "userProfile": "User Profile",
+    "backToUsers": "Back to Users",
+    "language": "Language",
+    "languageHelp": "Preferred language for the admin interface",
+    "creating": "Creating...",
+    "updating": "Updating..."
   },
   "roles": {
     "title": "Roles",
@@ -172,6 +182,7 @@
     "roleName": "Role Name",
     "displayName": "Display Name",
     "description": "Description",
+    "noDescription": "No description",
     "permissions": "Permissions",
     "systemRole": "System Role",
     "customRole": "Custom Role",
@@ -183,6 +194,9 @@
     "noRoles": "No roles found",
     "permissionsMatrix": "Permissions Matrix",
     "resource": "Resource",
+    "backToRoles": "Back to Roles",
+    "creating": "Creating...",
+    "updating": "Updating...",
     "actions": {
       "create": "Create",
       "read": "Read",
