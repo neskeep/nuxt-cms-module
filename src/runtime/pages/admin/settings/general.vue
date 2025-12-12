@@ -63,12 +63,6 @@ async function saveSettings() {
     <div class="settings-page">
       <!-- Header -->
       <div class="settings-page__header">
-        <NuxtLink :to="`${config.public.cms.adminPath}/settings/branding`" class="back-link">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-          </svg>
-          {{ t('settings.branding') }}
-        </NuxtLink>
         <h1 class="settings-page__title">{{ t('settings.general') }}</h1>
         <p class="settings-page__subtitle">Configure your personal preferences</p>
       </div>

@@ -204,9 +204,6 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
     // Add server plugin for database initialization
     addServerPlugin(resolver.resolve('./runtime/server/plugins/database'))
 
-    // Add server plugin for branding
-    addServerPlugin(resolver.resolve('./runtime/server/plugins/branding'))
-
     // Add security middleware for API routes
     addServerHandler({
       middleware: true,
@@ -234,10 +231,6 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
       {
         name: 'useCmsAdmin',
         from: resolver.resolve('./runtime/composables/useCmsAdmin')
-      },
-      {
-        name: 'useBranding',
-        from: resolver.resolve('./runtime/composables/useBranding')
       },
       {
         name: 'defineCmsConfig',
@@ -470,19 +463,6 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
       handler: resolver.resolve('./runtime/server/api/cms/roles/[id].delete')
     })
 
-    // Settings API
-    addServerHandler({
-      route: '/api/cms/settings/branding',
-      method: 'get',
-      handler: resolver.resolve('./runtime/server/api/cms/settings/branding.get')
-    })
-
-    addServerHandler({
-      route: '/api/cms/settings/branding',
-      method: 'put',
-      handler: resolver.resolve('./runtime/server/api/cms/settings/branding.put')
-    })
-
     // Public API (no authentication required)
     addServerHandler({
       route: '/api/cms/public/collections/:name',
@@ -618,13 +598,6 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
           name: 'cms-admin-settings-general',
           path: `${adminPath}/settings/general`,
           file: resolver.resolve('./runtime/pages/admin/settings/general.vue')
-        })
-
-        // Settings - Branding
-        pages.push({
-          name: 'cms-admin-settings-branding',
-          path: `${adminPath}/settings/branding`,
-          file: resolver.resolve('./runtime/pages/admin/settings/branding.vue')
         })
       })
 
