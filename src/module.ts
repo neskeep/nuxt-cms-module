@@ -585,6 +585,27 @@ const cmsModule: NuxtModule<CmsModuleOptions> = defineNuxtModule({
           path: `${adminPath}/roles/:id`,
           file: resolver.resolve('./runtime/pages/admin/roles/[id].vue')
         })
+
+        // Settings index (redirects to general)
+        pages.push({
+          name: 'cms-admin-settings',
+          path: `${adminPath}/settings`,
+          file: resolver.resolve('./runtime/pages/admin/settings/index.vue')
+        })
+
+        // Settings - General
+        pages.push({
+          name: 'cms-admin-settings-general',
+          path: `${adminPath}/settings/general`,
+          file: resolver.resolve('./runtime/pages/admin/settings/general.vue')
+        })
+
+        // Settings - Branding
+        pages.push({
+          name: 'cms-admin-settings-branding',
+          path: `${adminPath}/settings/branding`,
+          file: resolver.resolve('./runtime/pages/admin/settings/branding.vue')
+        })
       })
 
       // Add admin auth middleware
