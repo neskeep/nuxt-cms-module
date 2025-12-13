@@ -1,0 +1,1 @@
+A powerful, developer-friendly headless CMS module for Nuxt 3/4 with multi-database support, i18n, and beautiful admin panel
