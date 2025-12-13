@@ -1,2 +1,9 @@
 # Support this project
+# Primary platform
 buy_me_a_coffee: neskeep
+
+# Uncomment when ready:
+# github: neskeep  # When GitHub Sponsors is approved
+# ko_fi: neskeep   # Alternative to Buy Me a Coffee
+# patreon: neskeep # For recurring support
+# custom: ['https://paypal.me/neskeep', 'https://neskeep.com/donate']
